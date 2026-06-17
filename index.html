@@ -93,8 +93,9 @@
         const IconCalendar = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>;
         const IconGrid = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>;
         const IconDatabase = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>;
+        const IconEdit = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>;
 
-        // URL GOOGLE APPS SCRIPT
+        // URL GOOGLE APPS SCRIPT ANDA
         const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXXXj3gmiGxoqNYWiLhzwM8y3iBcGdWUAuZgLhK84B339nX3QFzcWr9UWtm5S6b2es2w/exec";
 
         // --- INITIAL DATABASE (MOCK DATA) ---
@@ -103,23 +104,23 @@
             { id: 2, yearMath: 622, displayM: "622 M", displayH: "1 H", title: "Hijrah Nabi Muhammad SAW", category: "Islam, Agama", description: "Perpindahan Rasulullah SAW dan para sahabat dari Mekkah ke Madinah, menandai dimulainya kalender Hijriah." },
             { id: 3, yearMath: 624, displayM: "624 M", displayH: "2 H", title: "Perang Badar", category: "Islam, Perang", description: "Pertempuran bersejarah pertama bagi umat Islam dalam mempertahankan diri dari serangan kaum Quraisy Mekkah." },
             { id: 4, yearMath: 1440, displayM: "1440 M", displayH: "844 H", title: "Penemuan Mesin Cetak Movable Type", category: "Eropa, Teknologi", description: "Johannes Gutenberg menemukan sistem mesin cetak huruf lepas di Mainz, Jerman, memicu ledakan informasi global." },
-            { id: 5, yearMath: 1453, displayM: "29 Mei 1453 M", displayH: "20 Jumadil Ula 857 H", title: "Penaklukan Konstantinopel", category: "Islam, Eropa, Perang", description: "Jatuhnya benteng Konstantinopel ke tangan Kesultanan Utsmaniyah di bawah pimpinan Sultan Muhammad Al-Fatih." },
+            { id: 5, yearMath: 1453, displayM: "29 Mei 1453 M", displayH: "20 Jumadil Ula 857 H", title: "Penaklukan Konstantinopel", category: "Islam, Perang", description: "Jatuhnya benteng Konstantinopel ke tangan Kesultanan Utsmaniyah di bawah pimpinan Sultan Muhammad Al-Fatih." },
             { id: 6, yearMath: 1453, displayM: "1453 M", displayH: "857 H", title: "Berakhirnya Perang Seratus Tahun", category: "Eropa, Perang", description: "Pertempuran Castillon menandai berakhirnya konflik berkepanjangan antara Inggris dan Prancis." },
             { id: 7, yearMath: 1945, displayM: "17 Agustus 1945 M", displayH: "9 Ramadhan 1364 H", title: "Proklamasi Kemerdekaan Indonesia", category: "Nusantara, Politik", description: "Pembacaan teks proklamasi kemerdekaan oleh Soekarno-Hatta di Pegangsaan Timur, Jakarta." }
         ];
 
         const initialFigures = [
-            { id: 1, birthMath: 767, deathMath: 820, displayBirthM: "767 M", displayBirthH: "150 H", displayDeathM: "820 M", displayDeathH: "204 H", name: "Imam Syafi'i", category: "Islam, Agama", description: "Abū ʿAbdillāh Muhammad bin Idrīs al-Shāfiʿī adalah ulama besar peletak dasar ilmu ushul fiqh dan pendiri Mazhab Syafi'i." },
-            { id: 2, birthMath: 1847, deathMath: 1931, displayBirthM: "1847 M", displayBirthH: "1263 H", displayDeathM: "1931 M", displayDeathH: "1350 H", name: "Thomas Alva Edison", category: "Amerika, Teknologi", description: "Inovator produktif asal Amerika Serikat yang mematenkan penemuan lampu pijar praktis dan fonograf." },
-            { id: 3, birthMath: 1350, deathMath: 1389, displayBirthM: "1350 M", displayBirthH: "751 H", displayDeathM: "1389 M", displayDeathH: "791 H", name: "Hayam Wuruk", category: "Nusantara, Politik", description: "Raja keempat Kerajaan Majapahit bergelar Sri Rajasanagara, memimpin puncak keemasan kerajaan nusantara bersatu." },
-            { id: 4, birthMath: 1452, deathMath: 1519, displayBirthM: "1452 M", displayBirthH: "856 H", displayDeathM: "1519 M", displayDeathH: "925 H", name: "Leonardo da Vinci", category: "Eropa, Seni Budaya", description: "Tokoh utama era Renaisans Italia, pelukis Mona Lisa, desainer penemu futuristik, dan ilmuwan anatomi." }
+            { id: 11, birthMath: 767, deathMath: 820, displayBirthM: "767 M", displayBirthH: "150 H", displayDeathM: "820 M", displayDeathH: "204 H", name: "Imam Syafi'i", category: "Islam, Agama", description: "Abū ʿAbdillāh Muhammad bin Idrīs al-Shāfiʿī adalah ulama besar peletak dasar ilmu ushul fiqh dan pendiri Mazhab Syafi'i." },
+            { id: 12, birthMath: 1847, deathMath: 1931, displayBirthM: "1847 M", displayBirthH: "1263 H", displayDeathM: "1931 M", displayDeathH: "1350 H", name: "Thomas Alva Edison", category: "Amerika, Teknologi", description: "Inovator produktif asal Amerika Serikat yang mematenkan penemuan lampu pijar praktis dan fonograf." },
+            { id: 13, birthMath: 1350, deathMath: 1389, displayBirthM: "1350 M", displayBirthH: "751 H", displayDeathM: "1389 M", displayDeathH: "791 H", name: "Hayam Wuruk", category: "Nusantara, Politik", description: "Raja keempat Kerajaan Majapahit bergelar Sri Rajasanagara, memimpin puncak keemasan kerajaan nusantara bersatu." },
+            { id: 14, birthMath: 1452, deathMath: 1519, displayBirthM: "1452 M", displayBirthH: "856 H", displayDeathM: "1519 M", displayDeathH: "925 H", name: "Leonardo da Vinci", category: "Eropa, Seni Budaya", description: "Tokoh utama era Renaisans Italia, pelukis Mona Lisa, desainer penemu futuristik, dan ilmuwan anatomi." }
         ];
 
         const initialEras = [
-            { id: 1, startMath: -27, endMath: 476, name: "Kekaisaran Romawi Kuno", wilayah: "Eropa", color: "bg-red-100 border-red-300 text-red-800", description: "Periode peradaban Romawi kuno dengan corak pemerintahan kaisar autokrasi, membentang luas di sekitar Laut Tengah." },
-            { id: 2, startMath: 661, endMath: 750, name: "Kekhalifahan Umayyah", wilayah: "Islam", color: "bg-green-100 border-green-300 text-green-800", description: "Kekhalifahan Islam pertama setelah Khulafaur Rasyidin, berpusat di Damaskus, Suriah, memperluas wilayah hingga Spanyol." },
-            { id: 3, startMath: 1293, endMath: 1527, name: "Kerajaan Majapahit", wilayah: "Nusantara", color: "bg-amber-100 border-amber-300 text-amber-800", description: "Kemaharajaan Hindu-Buddha terbesar di Nusantara, menguasai sebagian besar wilayah kepulauan Asia Tenggara." },
-            { id: 4, startMath: 1368, endMath: 1644, name: "Dinasti Ming", wilayah: "Asia Timur", color: "bg-red-50 border-red-200 text-red-700", description: "Dinasti penguasa Tiongkok yang memicu kemakmuran perdagangan laut, pembangunan Tembok Raksasa, dan perkembangan seni porselen." }
+            { id: 21, startMath: -27, endMath: 476, name: "Kekaisaran Romawi Kuno", wilayah: "Eropa", color: "bg-red-100 border-red-300 text-red-800", description: "Periode peradaban Romawi kuno dengan corak pemerintahan kaisar autokrasi, membentang luas di sekitar Laut Tengah." },
+            { id: 22, startMath: 661, endMath: 750, name: "Kekhalifahan Umayyah", wilayah: "Islam", color: "bg-green-100 border-green-300 text-green-800", description: "Kekhalifahan Islam pertama setelah Khulafaur Rasyidin, berpusat di Damaskus, Suriah, memperluas wilayah hingga Spanyol." },
+            { id: 23, startMath: 1293, endMath: 1527, name: "Kerajaan Majapahit", wilayah: "Nusantara", color: "bg-amber-100 border-amber-300 text-amber-800", description: "Kemaharajaan Hindu-Buddha terbesar di Nusantara, menguasai sebagian besar wilayah kepulauan Asia Tenggara." },
+            { id: 24, startMath: 1368, endMath: 1644, name: "Dinasti Ming", wilayah: "Asia Timur", color: "bg-red-50 border-red-200 text-red-700", description: "Dinasti penguasa Tiongkok yang memicu kemakmuran perdagangan laut, pembangunan Tembok Raksasa, dan perkembangan seni porselen." }
         ];
 
         const calculateConversions = (mathYear) => {
@@ -128,7 +129,6 @@
             let mStr = y > 0 ? `${y} M` : `${Math.abs(y)} SM`;
             if (y === 0) mStr = "1 SM"; 
 
-            // Rumus estimasi tahun Hijriah relatif terhadap awal Hijrah (622 M)
             const hYearExact = (y - 621.5774) * 1.030684; 
             let hStr = "";
             if (hYearExact >= 0) {
@@ -139,7 +139,7 @@
             return { m: mStr, h: hStr };
         };
 
-        const SmartEdgeMenu = ({ onNavigate }) => {
+        const SmartEdgeMenu = ({ onAddNew }) => {
             const [isOpen, setIsOpen] = useState(false);
 
             useEffect(() => {
@@ -157,13 +157,13 @@
                         </div>
                         <div className="w-56 bg-white/95 backdrop-blur-md shadow-[-5px_0_25px_rgba(234,88,12,0.15)] border-l border-y border-orange-100 rounded-l-2xl p-4 flex flex-col gap-2">
                             <div className="text-[10px] font-bold text-orange-400 px-2 py-1 uppercase tracking-wider border-b border-orange-100 mb-2">Tambah Data Baru</div>
-                            <button onClick={() => { onNavigate('form_event'); setIsOpen(false); }} className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-orange-50 text-gray-700 hover:text-orange-600 transition-colors text-sm font-semibold w-full text-left">
+                            <button onClick={() => { onAddNew('event'); setIsOpen(false); }} className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-orange-50 text-gray-700 hover:text-orange-600 transition-colors text-sm font-semibold w-full text-left">
                                 <span className="bg-orange-100 p-1.5 rounded-md text-orange-600"><IconBook /></span> Peristiwa
                             </button>
-                            <button onClick={() => { onNavigate('form_figure'); setIsOpen(false); }} className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-orange-50 text-gray-700 hover:text-orange-600 transition-colors text-sm font-semibold w-full text-left">
+                            <button onClick={() => { onAddNew('figure'); setIsOpen(false); }} className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-orange-50 text-gray-700 hover:text-orange-600 transition-colors text-sm font-semibold w-full text-left">
                                 <span className="bg-orange-100 p-1.5 rounded-md text-orange-600"><IconUsers /></span> Tokoh
                             </button>
-                            <button onClick={() => { onNavigate('form_era'); setIsOpen(false); }} className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-orange-50 text-gray-700 hover:text-orange-600 transition-colors text-sm font-semibold w-full text-left">
+                            <button onClick={() => { onAddNew('era'); setIsOpen(false); }} className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-orange-50 text-gray-700 hover:text-orange-600 transition-colors text-sm font-semibold w-full text-left">
                                 <span className="bg-orange-100 p-1.5 rounded-md text-orange-600"><IconDatabase /></span> Era / Periode
                             </button>
                         </div>
@@ -239,13 +239,7 @@
                         yearH = item.data.displayDeathH || '';
                     }
 
-                    const titleMatch = title.toLowerCase().includes(q);
-                    const descMatch = desc.toLowerCase().includes(q);
-                    const catMatch = cat.toLowerCase().includes(q);
-                    const yearMatch = yearM.toLowerCase().includes(q);
-                    const hMatch = yearH.toLowerCase().includes(q);
-
-                    if (!(titleMatch || descMatch || catMatch || yearMatch || hMatch)) return false;
+                    if (!(title.toLowerCase().includes(q) || desc.toLowerCase().includes(q) || cat.toLowerCase().includes(q) || yearM.toLowerCase().includes(q) || yearH.toLowerCase().includes(q))) return false;
                 }
                 if (activeFilter === 'Semua') return true;
                 const cat = item.data.category ? item.data.category.toLowerCase() : '';
@@ -358,9 +352,9 @@
                                 <button onClick={() => setYear(y => y-10)} className="bg-orange-50 hover:bg-orange-100 px-3 py-2 rounded-lg text-xs font-bold text-orange-600">-10</button>
                                 <div className="flex-1 w-full relative">
                                     <div className="text-center mb-1">
-                                        <input type="number" value={year} onChange={handleSlider} className="text-2xl font-black text-orange-600 bg-transparent border-none outline-none text-center w-28" />
+                                        <input type="number" id="timeSliderNumber" name="timeSliderNumber" value={year} onChange={handleSlider} className="text-2xl font-black text-orange-600 bg-transparent border-none outline-none text-center w-28" />
                                     </div>
-                                    <input type="range" min="-3000" max="2024" value={year} onChange={handleSlider} className="w-full" />
+                                    <input type="range" id="timeSlider" name="timeSlider" min="-3000" max="2024" value={year} onChange={handleSlider} className="w-full" />
                                 </div>
                                 <button onClick={() => setYear(y => y+10)} className="bg-orange-50 hover:bg-orange-100 px-3 py-2 rounded-lg text-xs font-bold text-orange-600">+10</button>
                             </div>
@@ -492,7 +486,7 @@
                         <div className="w-full md:w-2/5 flex flex-col gap-4">
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">Pilih Tanggal Lahir (Masehi)</label>
-                                <input type="date" value={masehiDate} onChange={(e) => { setMasehiDate(e.target.value); setHijriOffset(0); }} className="w-full p-4 border border-orange-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none text-lg text-gray-700 bg-orange-50 cursor-pointer" />
+                                <input type="date" id="masehiDate" name="masehiDate" value={masehiDate} onChange={(e) => { setMasehiDate(e.target.value); setHijriOffset(0); }} className="w-full p-4 border border-orange-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none text-lg text-gray-700 bg-orange-50 cursor-pointer" />
                             </div>
                             {computedData && (
                                 <div className="bg-orange-50 p-4 rounded-xl border border-orange-200 mt-2 shadow-inner">
@@ -708,35 +702,41 @@
             );
         };
 
-        const DetailView = ({ item, onBack, eras }) => {
+        // --- DETAIL VIEW WITH EDIT BUTTON ---
+        const DetailView = ({ item, onBack, onEdit }) => {
             const { type, data } = item;
             return (
-                <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm border border-orange-100 overflow-hidden pb-10">
+                <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden pb-10">
                     <div className="p-6 md:p-10">
-                        <button onClick={onBack} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors mb-8 font-medium"><IconArrowLeft /> Kembali</button>
+                        <div className="flex justify-between items-center mb-8">
+                            <button onClick={onBack} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors font-medium"><IconArrowLeft /> Kembali</button>
+                            <button onClick={() => onEdit(item)} className="flex items-center gap-2 bg-orange-100 text-orange-700 hover:bg-orange-200 transition-colors px-4 py-2 rounded-lg font-bold text-sm shadow-sm"><IconEdit /> Edit Data</button>
+                        </div>
                         
                         {type === 'event' && (
                             <div>
                                 <div className="inline-block px-3 py-1 bg-orange-100 text-orange-700 text-[10px] font-bold uppercase tracking-wider rounded-full mb-4">{data.category}</div>
                                 <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-6">{data.title}</h2>
                                 <div className="flex flex-wrap gap-4 mb-8">
-                                    <div className="bg-orange-50 p-4 rounded-xl border border-orange-100 flex-1 min-w-[150px]"><p className="text-xs text-orange-500 font-semibold mb-1">Masehi</p><p className="text-xl font-bold text-orange-800">{data.displayM}</p></div>
+                                    <div className="bg-orange-50 p-4 rounded-xl border border-orange-100 flex-1 min-w-[150px]"><p className="text-xs text-gray-500 font-semibold mb-1">Masehi</p><p className="text-xl font-bold text-gray-800">{data.displayM}</p></div>
                                     <div className="bg-orange-100 p-4 rounded-xl border border-orange-200 flex-1 min-w-[150px]"><p className="text-xs text-orange-600 font-semibold mb-1">Hijriah</p><p className="text-xl font-bold text-orange-800">{data.displayH}</p></div>
                                 </div>
                                 <div className="prose prose-sm md:prose-base text-gray-700"><h3 className="text-lg font-bold text-gray-900 mb-2">Deskripsi Lengkap</h3><p>{data.description}</p></div>
                             </div>
                         )}
+                        
                         {(type === 'birth' || type === 'death') && (
                             <div>
                                 <div className="inline-block px-3 py-1 bg-orange-100 text-orange-700 text-[10px] font-bold uppercase tracking-wider rounded-full mb-4">Tokoh: {data.category}</div>
                                 <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-6">{data.name}</h2>
                                 <div className="grid md:grid-cols-2 gap-4 mb-8">
                                     <div className="bg-orange-50 p-4 rounded-xl border border-orange-100"><p className="text-xs text-orange-600 font-semibold mb-2">Lahir</p><p className="font-bold text-gray-800">{data.displayBirthM}</p><p className="text-sm text-orange-700 font-medium">{data.displayBirthH}</p></div>
-                                    {data.deathMath && <div className="bg-gray-50 p-4 rounded-xl border border-orange-200"><p className="text-xs text-gray-500 font-semibold mb-2">Wafat</p><p className="font-bold text-gray-800">{data.displayDeathM}</p><p className="text-sm text-gray-600 font-medium">{data.displayDeathH}</p></div>}
+                                    <div className="bg-gray-50 p-4 rounded-xl border border-gray-200"><p className="text-xs text-gray-500 font-semibold mb-2">Wafat</p><p className="font-bold text-gray-800">{data.displayDeathM || "?"}</p><p className="text-sm text-gray-600 font-medium">{data.displayDeathH}</p></div>
                                 </div>
                                 <div className="prose prose-sm md:prose-base text-gray-700"><h3 className="text-lg font-bold text-gray-900 mb-2">Biografi</h3><p>{data.description}</p></div>
                             </div>
                         )}
+
                         {type === 'era' && (
                             <div>
                                 <div className="inline-block px-3 py-1 bg-orange-100 text-orange-700 text-[10px] font-bold uppercase tracking-wider rounded-full mb-4">Wilayah: {data.wilayah}</div>
@@ -744,10 +744,10 @@
                                 <div className="flex flex-wrap gap-4 mb-8">
                                     <div className="bg-orange-50 p-4 rounded-xl border border-orange-100 flex-1 min-w-[200px]">
                                         <p className="text-xs text-orange-600 font-semibold mb-1">Rentang Waktu Kekuasaan</p>
-                                        <p className="text-xl font-bold text-orange-800">{calculateConversions(data.startMath).m} - {calculateConversions(data.endMath).m}</p>
+                                        <p className="text-xl font-bold text-orange-800">{calculateConversions(data.startMath).m} s/d {calculateConversions(data.endMath).m}</p>
                                     </div>
                                 </div>
-                                <div className="prose prose-sm md:prose-base text-gray-700"><h3 className="text-lg font-bold text-gray-900 mb-2">Deskripsi Periode</h3><p>{data.description || 'Deskripsi belum ditambahkan.'}</p></div>
+                                <div className="prose prose-sm md:prose-base text-gray-700"><h3 className="text-lg font-bold text-gray-900 mb-2">Deskripsi Periode</h3><p>{data.description || 'Deskripsi era ini belum lengkap.'}</p></div>
                             </div>
                         )}
                     </div>
@@ -755,8 +755,16 @@
             );
         };
 
-        const FormEvent = ({ onSave, onCancel }) => {
-            const [formData, setFormData] = useState({ yearMath: '', displayM: '', displayH: '', title: '', wilayah: '', tema: '', description: '' });
+        // --- FORMS (WITH INITIAL DATA SUPPORT FOR EDITING) ---
+        const FormEvent = ({ onSave, onCancel, initialData }) => {
+            const [formData, setFormData] = useState(() => {
+                if(initialData) {
+                    const parts = initialData.category ? initialData.category.split(', ') : ['', ''];
+                    return { ...initialData, wilayah: parts[0] || '', tema: parts[1] || '' };
+                }
+                return { yearMath: '', displayM: '', displayH: '', title: '', wilayah: '', tema: '', description: '' };
+            });
+
             const handleMathYearChange = (e) => { const v=e.target.value; const c=calculateConversions(v); setFormData({...formData, yearMath:v, displayM:c.m, displayH:c.h}); };
             
             const handleSubmit = (e) => {
@@ -767,17 +775,17 @@
 
             return (
                 <div className="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-orange-100 pb-20">
-                    <div className="flex justify-between items-center mb-6 border-b pb-4"><h2 className="text-xl font-bold text-gray-800">Tambah Peristiwa</h2><button onClick={onCancel} className="text-gray-400 font-bold hover:text-red-500">Batal</button></div>
+                    <div className="flex justify-between items-center mb-6 border-b pb-4"><h2 className="text-xl font-bold text-gray-800">{initialData ? 'Edit Peristiwa' : 'Tambah Peristiwa'}</h2><button onClick={onCancel} className="text-gray-400 font-bold hover:text-red-500">Batal</button></div>
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        <input type="number" required value={formData.yearMath} onChange={handleMathYearChange} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Tahun Matematis (Misal: 1453)" />
+                        <input type="number" id="yearMathEvent" name="yearMathEvent" required value={formData.yearMath} onChange={handleMathYearChange} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Tahun Matematis (Misal: 1453)" />
                         <div className="grid grid-cols-2 gap-2">
-                            <input type="text" value={formData.displayM} onChange={e=>setFormData({...formData,displayM:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none" placeholder="Tampil Masehi" />
-                            <input type="text" value={formData.displayH} onChange={e=>setFormData({...formData,displayH:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none" placeholder="Tampil Hijriah" />
+                            <input type="text" id="displayMEvent" name="displayMEvent" value={formData.displayM} onChange={e=>setFormData({...formData,displayM:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none" placeholder="Tampil Masehi" />
+                            <input type="text" id="displayHEvent" name="displayHEvent" value={formData.displayH} onChange={e=>setFormData({...formData,displayH:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none" placeholder="Tampil Hijriah" />
                         </div>
-                        <input type="text" required value={formData.title} onChange={e=>setFormData({...formData,title:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Judul Peristiwa" />
+                        <input type="text" id="titleEvent" name="titleEvent" required value={formData.title} onChange={e=>setFormData({...formData,title:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Judul Peristiwa" />
                         
                         <div className="grid grid-cols-2 gap-2">
-                            <select required value={formData.wilayah} onChange={e=>setFormData({...formData, wilayah:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
+                            <select id="wilayahEvent" name="wilayahEvent" required value={formData.wilayah} onChange={e=>setFormData({...formData, wilayah:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
                                 <option value="" disabled>Pilih Wilayah...</option>
                                 <option value="Nusantara">Nusantara</option>
                                 <option value="Islam">Timur Tengah / Islam</option>
@@ -787,7 +795,7 @@
                                 <option value="Amerika">Amerika</option>
                                 <option value="Afrika">Afrika</option>
                             </select>
-                            <select required value={formData.tema} onChange={e=>setFormData({...formData, tema:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
+                            <select id="temaEvent" name="temaEvent" required value={formData.tema} onChange={e=>setFormData({...formData, tema:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
                                 <option value="" disabled>Pilih Tema...</option>
                                 <option value="Agama">Agama & Kepercayaan</option>
                                 <option value="Perang">Militer & Perang</option>
@@ -797,35 +805,61 @@
                                 <option value="Umum">Umum</option>
                             </select>
                         </div>
-                        <textarea required rows="4" value={formData.description} onChange={e=>setFormData({...formData,description:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Deskripsi Sejarah"></textarea>
+                        <textarea id="descriptionEvent" name="descriptionEvent" required rows="4" value={formData.description} onChange={e=>setFormData({...formData,description:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Deskripsi Sejarah"></textarea>
                         <button type="submit" className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-lg mt-2 transition-colors">Simpan Peristiwa</button>
                     </form>
                 </div>
             );
         };
 
-        const FormFigure = ({ onSave, onCancel }) => {
-            const [formData, setFormData] = useState({ birthMath: '', displayBirthM: '', displayBirthH: '', name: '', wilayah: '', tema: '', description: '' });
-            const handleMathYearChange = (e) => { const v=e.target.value; const c=calculateConversions(v); setFormData({...formData, birthMath:v, displayBirthM:c.m, displayBirthH:c.h}); };
+        const FormFigure = ({ onSave, onCancel, initialData }) => {
+            const [formData, setFormData] = useState(() => {
+                if(initialData) {
+                    const parts = initialData.category ? initialData.category.split(', ') : ['', ''];
+                    return { 
+                        ...initialData, 
+                        wilayah: parts[0] || '', tema: parts[1] || '',
+                        deathMath: initialData.deathMath || '', displayDeathM: initialData.displayDeathM || '', displayDeathH: initialData.displayDeathH || ''
+                    };
+                }
+                return { birthMath: '', displayBirthM: '', displayBirthH: '', deathMath: '', displayDeathM: '', displayDeathH: '', name: '', wilayah: '', tema: '', description: '' };
+            });
+
+            const handleBirthMathChange = (e) => { const v=e.target.value; const c=calculateConversions(v); setFormData({...formData, birthMath:v, displayBirthM:c.m, displayBirthH:c.h}); };
+            const handleDeathMathChange = (e) => { const v=e.target.value; const c=calculateConversions(v); setFormData({...formData, deathMath:v, displayDeathM:c.m, displayDeathH:c.h}); };
             
             const handleSubmit = (e) => {
                 e.preventDefault();
                 const finalCategory = `${formData.wilayah}, ${formData.tema}`;
-                onSave({...formData, category: finalCategory, birthMath: parseInt(formData.birthMath)});
+                onSave({...formData, category: finalCategory, birthMath: parseInt(formData.birthMath), deathMath: formData.deathMath ? parseInt(formData.deathMath) : null});
             };
 
             return (
                 <div className="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-orange-100 pb-20">
-                    <div className="flex justify-between items-center mb-6 border-b pb-4"><h2 className="text-xl font-bold text-gray-800">Tambah Tokoh</h2><button onClick={onCancel} className="text-gray-400 font-bold hover:text-red-500">Batal</button></div>
+                    <div className="flex justify-between items-center mb-6 border-b pb-4"><h2 className="text-xl font-bold text-gray-800">{initialData ? 'Edit Tokoh' : 'Tambah Tokoh'}</h2><button onClick={onCancel} className="text-gray-400 font-bold hover:text-red-500">Batal</button></div>
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        <input type="text" required value={formData.name} onChange={e=>setFormData({...formData,name:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Nama Tokoh" />
-                        <input type="number" required value={formData.birthMath} onChange={handleMathYearChange} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Tahun Lahir (Math)" />
-                        <div className="grid grid-cols-2 gap-2">
-                            <input type="text" value={formData.displayBirthM} onChange={e=>setFormData({...formData,displayBirthM:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none" placeholder="Tampil Lahir Masehi" />
-                            <input type="text" value={formData.displayBirthH} onChange={e=>setFormData({...formData,displayBirthH:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none" placeholder="Tampil Lahir Hijriah" />
+                        <input type="text" id="nameFigure" name="nameFigure" required value={formData.name} onChange={e=>setFormData({...formData,name:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Nama Tokoh" />
+                        
+                        <div className="bg-orange-50 p-4 rounded-lg border border-orange-100">
+                            <p className="text-xs font-bold text-orange-800 mb-2 uppercase tracking-wide">Data Lahir</p>
+                            <input type="number" required value={formData.birthMath} onChange={handleBirthMathChange} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 mb-2" placeholder="Tahun Lahir (Math)" />
+                            <div className="grid grid-cols-2 gap-2">
+                                <input type="text" value={formData.displayBirthM} onChange={e=>setFormData({...formData,displayBirthM:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none" placeholder="Tampil Lahir Masehi" />
+                                <input type="text" value={formData.displayBirthH} onChange={e=>setFormData({...formData,displayBirthH:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none" placeholder="Tampil Lahir Hijriah" />
+                            </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-2">
-                            <select required value={formData.wilayah} onChange={e=>setFormData({...formData, wilayah:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
+
+                        <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <p className="text-xs font-bold text-gray-600 mb-2 uppercase tracking-wide">Data Wafat (Kosongkan jika masih hidup)</p>
+                            <input type="number" value={formData.deathMath} onChange={handleDeathMathChange} className="w-full p-2.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 mb-2" placeholder="Tahun Wafat (Math)" />
+                            <div className="grid grid-cols-2 gap-2">
+                                <input type="text" value={formData.displayDeathM} onChange={e=>setFormData({...formData,displayDeathM:e.target.value})} className="p-2.5 border border-gray-200 rounded-lg outline-none" placeholder="Tampil Wafat Masehi" />
+                                <input type="text" value={formData.displayDeathH} onChange={e=>setFormData({...formData,displayDeathH:e.target.value})} className="p-2.5 border border-gray-200 rounded-lg outline-none" placeholder="Tampil Wafat Hijriah" />
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2 mt-4">
+                            <select id="wilayahFigure" name="wilayahFigure" required value={formData.wilayah} onChange={e=>setFormData({...formData, wilayah:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
                                 <option value="" disabled>Asal Wilayah...</option>
                                 <option value="Nusantara">Nusantara</option>
                                 <option value="Islam">Timur Tengah / Islam</option>
@@ -835,7 +869,7 @@
                                 <option value="Amerika">Amerika</option>
                                 <option value="Afrika">Afrika</option>
                             </select>
-                            <select required value={formData.tema} onChange={e=>setFormData({...formData, tema:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
+                            <select id="temaFigure" name="temaFigure" required value={formData.tema} onChange={e=>setFormData({...formData, tema:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
                                 <option value="" disabled>Profesi / Peran...</option>
                                 <option value="Agama">Ulama / Tokoh Agama</option>
                                 <option value="Politik">Raja / Pemimpin</option>
@@ -845,15 +879,15 @@
                                 <option value="Umum">Umum</option>
                             </select>
                         </div>
-                        <textarea required rows="4" value={formData.description} onChange={e=>setFormData({...formData,description:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Biografi Singkat"></textarea>
+                        <textarea id="descriptionFigure" name="descriptionFigure" required rows="4" value={formData.description} onChange={e=>setFormData({...formData,description:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Biografi Singkat"></textarea>
                         <button type="submit" className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-lg mt-2 transition-colors">Simpan Tokoh</button>
                     </form>
                 </div>
             );
         };
         
-        const FormEra = ({ onSave, onCancel }) => {
-            const [formData, setFormData] = useState({ startMath: '', endMath: '', name: '', wilayah: '', description: '', color: 'bg-orange-100 border-orange-300 text-orange-800' });
+        const FormEra = ({ onSave, onCancel, initialData }) => {
+            const [formData, setFormData] = useState(initialData || { startMath: '', endMath: '', name: '', wilayah: '', description: '', color: 'bg-orange-100 border-orange-300 text-orange-800' });
             
             const handleSubmit = (e) => {
                 e.preventDefault();
@@ -862,10 +896,10 @@
 
             return (
                 <div className="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-orange-100 pb-20">
-                    <div className="flex justify-between items-center mb-6 border-b pb-4"><h2 className="text-xl font-bold text-gray-800">Tambah Era / Zaman</h2><button onClick={onCancel} className="text-gray-400 font-bold hover:text-red-500">Batal</button></div>
+                    <div className="flex justify-between items-center mb-6 border-b pb-4"><h2 className="text-xl font-bold text-gray-800">{initialData ? 'Edit Era' : 'Tambah Era / Zaman'}</h2><button onClick={onCancel} className="text-gray-400 font-bold hover:text-red-500">Batal</button></div>
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        <input type="text" required value={formData.name} onChange={e=>setFormData({...formData,name:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Nama Era (Misal: Bani Umayyah)" />
-                        <select required value={formData.wilayah} onChange={e=>setFormData({...formData, wilayah:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
+                        <input type="text" id="nameEra" name="nameEra" required value={formData.name} onChange={e=>setFormData({...formData,name:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Nama Era (Misal: Bani Umayyah)" />
+                        <select id="wilayahEra" name="wilayahEra" required value={formData.wilayah} onChange={e=>setFormData({...formData, wilayah:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
                             <option value="" disabled>Pusat Wilayah Kekuasaan...</option>
                             <option value="Nusantara">Nusantara</option>
                             <option value="Islam">Timur Tengah / Islam</option>
@@ -876,10 +910,10 @@
                             <option value="Afrika">Afrika</option>
                         </select>
                         <div className="grid grid-cols-2 gap-2">
-                            <input type="number" required value={formData.startMath} onChange={e=>setFormData({...formData,startMath:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Tahun Mulai Berdiri (Math)" />
-                            <input type="number" required value={formData.endMath} onChange={e=>setFormData({...formData,endMath:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Tahun Runtuh (Math)" />
+                            <input type="number" id="startMathEra" name="startMathEra" required value={formData.startMath} onChange={e=>setFormData({...formData,startMath:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Tahun Mulai Berdiri (Math)" />
+                            <input type="number" id="endMathEra" name="endMathEra" required value={formData.endMath} onChange={e=>setFormData({...formData,endMath:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Tahun Runtuh (Math)" />
                         </div>
-                        <textarea required rows="4" value={formData.description} onChange={e=>setFormData({...formData,description:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Deskripsi Singkat Era Ini..."></textarea>
+                        <textarea id="descriptionEra" name="descriptionEra" required rows="4" value={formData.description} onChange={e=>setFormData({...formData,description:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Deskripsi Singkat Era Ini..."></textarea>
                         
                         <button type="submit" className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-lg mt-4 transition-colors">Simpan Era</button>
                     </form>
@@ -893,7 +927,8 @@
             const [eras, setEras] = useState(initialEras);
             const [activeMenu, setActiveMenu] = useState('timeline'); 
             const [selectedItem, setSelectedItem] = useState(null); 
-            const [syncStatus, setSyncStatus] = useState(''); // State untuk loading indikator
+            const [editingItem, setEditingItem] = useState(null);
+            const [syncStatus, setSyncStatus] = useState(''); 
 
             const timelineData = useMemo(() => {
                 let items = [];
@@ -906,82 +941,105 @@
             }, [events, figures]);
 
             const saveToDatabase = async (type, data) => {
-                // 1. Meminta Password via Prompt Browser
-                const adminPassword = window.prompt("Otorisasi Admin: Masukkan Password untuk menyimpan data ke Cloud.");
-                if (!adminPassword) return; // Batal jika kosong/cancel
+                const adminPassword = window.prompt("Otorisasi Admin: Masukkan Password untuk Menyimpan/Mengedit data ke Cloud.");
+                if (!adminPassword) return; 
 
-                setSyncStatus('Menyimpan ke Cloud...');
+                const isUpdate = !!data.id;
+                const actionStr = isUpdate ? `update_${type}` : `add_${type}`;
+                setSyncStatus(isUpdate ? 'Memperbarui di Cloud...' : 'Menyimpan ke Cloud...');
 
                 try {
-                    // 2. Mengirim POST request ke Google Sheets
                     const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // 'text/plain' menghindari masalah CORS preflight
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                         body: JSON.stringify({
                             password: adminPassword,
-                            action: `add_${type}`,
+                            action: actionStr,
                             data: data
-                        })
+                        }),
+                        redirect: "follow"
                     });
+
+                    if (!response.ok && response.type !== 'opaque') {
+                        throw new Error(`HTTP Error Status: ${response.status}`);
+                    }
 
                     const result = await response.json();
 
                     if (result.status === 'success') {
-                        // 3. Update tampilan lokal jika berhasil
-                        const newItem = result.data;
-                        if (type === 'event') setEvents([...events, newItem]);
-                        if (type === 'figure') setFigures([...figures, newItem]);
-                        if (type === 'era') setEras([...eras, newItem]);
+                        const savedItem = result.data || data;
+                        if (!savedItem.id && !isUpdate) savedItem.id = Date.now(); // Fallback ID
+
+                        if (isUpdate) {
+                            if (type === 'event') setEvents(events.map(e => e.id === savedItem.id ? savedItem : e));
+                            if (type === 'figure') setFigures(figures.map(f => f.id === savedItem.id ? savedItem : f));
+                            if (type === 'era') setEras(eras.map(e => e.id === savedItem.id ? savedItem : e));
+                            setSyncStatus('Data Diperbarui!');
+                        } else {
+                            if (type === 'event') setEvents([...events, savedItem]);
+                            if (type === 'figure') setFigures([...figures, savedItem]);
+                            if (type === 'era') setEras([...eras, savedItem]);
+                            setSyncStatus('Tersimpan di Cloud!');
+                        }
                         
-                        setSyncStatus('Tersimpan di Cloud!');
-                        setTimeout(() => { setSyncStatus(''); setActiveMenu('timeline'); }, 1500);
+                        setTimeout(() => { setSyncStatus(''); setActiveMenu('timeline'); setEditingItem(null); setSelectedItem(null); }, 1500);
                     } else {
-                        // 4. Jika password salah atau gagal
                         alert("Gagal Menyimpan: " + result.message);
                         setSyncStatus('');
                     }
                 } catch (error) {
-                    console.error(error);
-                    alert("Gagal menyimpan. Pastikan koneksi internet stabil dan URL Apps Script benar.");
+                    console.error("Fetch Error:", error);
+                    alert("Gagal terhubung ke Database!\n\nPastikan:\n1. URL Google Script Anda benar.\n2. Script sudah di-Deploy Ulang (New Deployment).\n3. Akses disetel 'Anyone/Siapa Saja'.");
                     setSyncStatus('');
                 }
             };
 
             const handleMenuChange = (menu) => {
                 setSelectedItem(null);
+                setEditingItem(null);
                 setActiveMenu(menu);
+            };
+
+            const handleAddNew = (type) => {
+                setSelectedItem(null);
+                setEditingItem(null);
+                setActiveMenu(`form_${type}`);
+            };
+
+            const handleEditItem = (item) => {
+                setSelectedItem(null);
+                setEditingItem(item);
+                if (item.type === 'event') setActiveMenu('form_event');
+                if (item.type === 'birth' || item.type === 'death') setActiveMenu('form_figure');
+                if (item.type === 'era') setActiveMenu('form_era');
             };
 
             const isAlatActive = ['alat_home', 'events', 'figures', 'eras', 'tech', 'converter'].includes(activeMenu);
 
             return (
                 <div className="flex flex-col h-screen overflow-hidden bg-zamania-50">
-                    {/* TOP HEADER */}
                     <header className="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-4 shadow-md z-20 flex-shrink-0 flex justify-between items-center border-none">
                         <div>
                             <h1 className="text-xl font-extrabold tracking-tight">ZAMANIA</h1>
                             <p className="text-[10px] text-orange-100 font-semibold tracking-wider uppercase leading-none mt-1">Kalender Sejarah</p>
                         </div>
                         
-                        {/* Status Menyimpan (Indikator Loading) */}
                         {syncStatus && (
                             <div className="absolute top-14 left-1/2 transform -translate-x-1/2 bg-white text-orange-600 px-4 py-1.5 rounded-full text-xs font-bold shadow-lg animate-pulse z-50 border border-orange-200">
                                 {syncStatus}
                             </div>
                         )}
 
-                        {/* Mobile Add Buttons */}
                         <div className="md:hidden flex gap-2">
-                             <button onClick={() => handleMenuChange('form_event')} className="text-white bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors" title="Tambah Peristiwa"><IconBook /></button>
-                             <button onClick={() => handleMenuChange('form_figure')} className="text-white bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors" title="Tambah Tokoh"><IconUsers /></button>
-                             <button onClick={() => handleMenuChange('form_era')} className="text-white bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors" title="Tambah Era"><IconDatabase /></button>
+                             <button onClick={() => handleAddNew('event')} className="text-white bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors" title="Tambah Peristiwa"><IconBook /></button>
+                             <button onClick={() => handleAddNew('figure')} className="text-white bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors" title="Tambah Tokoh"><IconUsers /></button>
+                             <button onClick={() => handleAddNew('era')} className="text-white bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors" title="Tambah Era"><IconDatabase /></button>
                         </div>
                     </header>
 
-                    {/* MAIN CONTENT AREA */}
                     <div className="flex-1 p-4 md:p-6 scrollable-content relative">
                         {selectedItem ? (
-                            <DetailView item={selectedItem} onBack={() => setSelectedItem(null)} eras={eras} />
+                            <DetailView item={selectedItem} onBack={() => setSelectedItem(null)} onEdit={handleEditItem} />
                         ) : (
                             <div>
                                 {activeMenu === 'timeline' && <TimelineView items={timelineData} eras={eras} onCardClick={setSelectedItem} />}
@@ -992,14 +1050,15 @@
                                 {activeMenu === 'eras' && <ErasList items={eras} onCardClick={item => setSelectedItem({type: 'era', data: item, yearMath: item.startMath})} onBack={() => handleMenuChange('alat_home')} />}
                                 {activeMenu === 'tech' && <TechView events={events} figures={figures} onCardClick={setSelectedItem} onBack={() => handleMenuChange('alat_home')} />}
                                 {activeMenu === 'converter' && <DateConverterView onBack={() => handleMenuChange('alat_home')} />}
-                                {activeMenu === 'form_event' && <FormEvent onSave={(data) => saveToDatabase('event', data)} onCancel={() => handleMenuChange('timeline')} />}
-                                {activeMenu === 'form_figure' && <FormFigure onSave={(data) => saveToDatabase('figure', data)} onCancel={() => handleMenuChange('timeline')} />}
-                                {activeMenu === 'form_era' && <FormEra onSave={(data) => saveToDatabase('era', data)} onCancel={() => handleMenuChange('timeline')} />}
+                                
+                                {/* FORMS (With initialData for Edit Mode) */}
+                                {activeMenu === 'form_event' && <FormEvent initialData={editingItem?.data} onSave={(data) => saveToDatabase('event', data)} onCancel={() => handleMenuChange('timeline')} />}
+                                {activeMenu === 'form_figure' && <FormFigure initialData={editingItem?.data} onSave={(data) => saveToDatabase('figure', data)} onCancel={() => handleMenuChange('timeline')} />}
+                                {activeMenu === 'form_era' && <FormEra initialData={editingItem?.data} onSave={(data) => saveToDatabase('era', data)} onCancel={() => handleMenuChange('timeline')} />}
                             </div>
                         )}
                     </div>
 
-                    {/* BOTTOM NAVIGATION BAR */}
                     <nav className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-orange-600 to-orange-700 bottom-nav-shadow z-40 pb-safe">
                         <div className="max-w-md mx-auto flex justify-between items-center h-16 px-6">
                             <button onClick={() => handleMenuChange('timeline')} className={`flex flex-col items-center justify-center w-full h-full transition-all ${activeMenu === 'timeline' ? 'text-white scale-110 font-bold' : 'text-orange-200 hover:text-white'}`}>
@@ -1017,7 +1076,7 @@
                         </div>
                     </nav>
 
-                    <SmartEdgeMenu onNavigate={handleMenuChange} />
+                    <SmartEdgeMenu onAddNew={handleAddNew} />
                 </div>
             );
         };
