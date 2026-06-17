@@ -949,26 +949,21 @@
                 setSyncStatus(isUpdate ? 'Memperbarui di Cloud...' : 'Menyimpan ke Cloud...');
 
                 try {
+                    // MENGHAPUS HEADERS AGAR LOLOS CORS DARI BROWSER
                     const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                         body: JSON.stringify({
                             password: adminPassword,
                             action: actionStr,
                             data: data
-                        }),
-                        redirect: "follow"
+                        })
                     });
-
-                    if (!response.ok && response.type !== 'opaque') {
-                        throw new Error(`HTTP Error Status: ${response.status}`);
-                    }
 
                     const result = await response.json();
 
                     if (result.status === 'success') {
                         const savedItem = result.data || data;
-                        if (!savedItem.id && !isUpdate) savedItem.id = Date.now(); // Fallback ID
+                        if (!savedItem.id && !isUpdate) savedItem.id = Date.now();
 
                         if (isUpdate) {
                             if (type === 'event') setEvents(events.map(e => e.id === savedItem.id ? savedItem : e));
@@ -989,7 +984,7 @@
                     }
                 } catch (error) {
                     console.error("Fetch Error:", error);
-                    alert("Gagal terhubung ke Database!\n\nPastikan:\n1. URL Google Script Anda benar.\n2. Script sudah di-Deploy Ulang (New Deployment).\n3. Akses disetel 'Anyone/Siapa Saja'.");
+                    alert("Masih terblokir! Pastikan akses Google Script disetel ke 'Siapa Saja' (Anyone) dan gunakan akun Gmail biasa.");
                     setSyncStatus('');
                 }
             };
