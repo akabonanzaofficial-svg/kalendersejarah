@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZAMANIA Kalender Sejarah</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & ReactDOM (Stable Production Versions) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+    <!-- Babel Compiler for JSX -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js" crossorigin></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        zamania: {
+                            50: '#fffcf9',   // Warm cream background
+                            100: '#ffedd5',  // Very light orange
+                            500: '#f97316',  // Fresh Orange
+                            600: '#ea580c',  // Deep Orange
+                            800: '#7c2d12',  // Terracotta/Rust
+                            900: '#431407',  // Deepest Warm Charcoal
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fffcf9; overflow: hidden; }
+        .scrollable-content { overflow-y: auto; height: calc(100vh - 130px); }
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background-color: #fed7aa;
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+        @media (max-width: 768px) {
+            .timeline-line::before { left: 24px; }
+            .scrollable-content { height: calc(100vh - 140px); }
+        }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        .no-select { user-select: none; -webkit-user-select: none; }
+        
+        /* Custom Styling Input Range */
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 22px;
+            width: 22px;
+            border-radius: 50%;
+            background: #f97316;
+            cursor: pointer;
+            margin-top: -7px;
+            box-shadow: 0 2px 5px rgba(234, 88, 12, 0.3);
+            border: 2px solid white;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: #ffedd5;
+            border-radius: 4px;
+        }
+        .bottom-nav-shadow { box-shadow: 0 -4px 20px rgba(234,88,12,0.12); }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        // --- ICONS (Inline SVG) ---
+        const IconClock = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
+        const IconBook = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>;
+        const IconUsers = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+        const IconCpu = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>;
+        const IconGlobe = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>;
+        const IconSearch = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
+        const IconArrowLeft = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>;
+        const IconChevronLeft = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>;
+        const IconMapPin = () => <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>;
+        const IconCalendar = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>;
+        const IconGrid = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>;
+        const IconDatabase = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>;
+
+        // URL GOOGLE APPS SCRIPT
+        const GOOGLE_APPS_SCRIPT_URL = "MASUKKAN_URL_GOOGLE_SCRIPT_ANDA_DI_SINI";
+
+        // --- INITIAL DATABASE (MOCK DATA) ---
+        const initialEvents = [
+            { id: 1, yearMath: -3000, displayM: "Abad 30 SM (Perkiraan)", displayH: "~ 3733 SH", title: "Peristiwa Banjir Nuh", category: "Islam, Agama", description: "Perkiraan waktu terjadinya air bah besar di masa Nabi Nuh AS yang membasuh peradaban lama di bumi." },
+            { id: 2, yearMath: 622, displayM: "622 M", displayH: "1 H", title: "Hijrah Nabi Muhammad SAW", category: "Islam, Agama", description: "Perpindahan Rasulullah SAW dan para sahabat dari Mekkah ke Madinah, menandai dimulainya kalender Hijriah." },
+            { id: 3, yearMath: 624, displayM: "624 M", displayH: "2 H", title: "Perang Badar", category: "Islam, Perang", description: "Pertempuran bersejarah pertama bagi umat Islam dalam mempertahankan diri dari serangan kaum Quraisy Mekkah." },
+            { id: 4, yearMath: 1440, displayM: "1440 M", displayH: "844 H", title: "Penemuan Mesin Cetak Movable Type", category: "Eropa, Teknologi", description: "Johannes Gutenberg menemukan sistem mesin cetak huruf lepas di Mainz, Jerman, memicu ledakan informasi global." },
+            { id: 5, yearMath: 1453, displayM: "29 Mei 1453 M", displayH: "20 Jumadil Ula 857 H", title: "Penaklukan Konstantinopel", category: "Islam, Eropa, Perang", description: "Jatuhnya benteng Konstantinopel ke tangan Kesultanan Utsmaniyah di bawah pimpinan Sultan Muhammad Al-Fatih." },
+            { id: 6, yearMath: 1453, displayM: "1453 M", displayH: "857 H", title: "Berakhirnya Perang Seratus Tahun", category: "Eropa, Perang", description: "Pertempuran Castillon menandai berakhirnya konflik berkepanjangan antara Inggris dan Prancis." },
+            { id: 7, yearMath: 1945, displayM: "17 Agustus 1945 M", displayH: "9 Ramadhan 1364 H", title: "Proklamasi Kemerdekaan Indonesia", category: "Nusantara, Politik", description: "Pembacaan teks proklamasi kemerdekaan oleh Soekarno-Hatta di Pegangsaan Timur, Jakarta." }
+        ];
+
+        const initialFigures = [
+            { id: 1, birthMath: 767, deathMath: 820, displayBirthM: "767 M", displayBirthH: "150 H", displayDeathM: "820 M", displayDeathH: "204 H", name: "Imam Syafi'i", category: "Islam, Agama", description: "Abū ʿAbdillāh Muhammad bin Idrīs al-Shāfiʿī adalah ulama besar peletak dasar ilmu ushul fiqh dan pendiri Mazhab Syafi'i." },
+            { id: 2, birthMath: 1847, deathMath: 1931, displayBirthM: "1847 M", displayBirthH: "1263 H", displayDeathM: "1931 M", displayDeathH: "1350 H", name: "Thomas Alva Edison", category: "Amerika, Teknologi", description: "Inovator produktif asal Amerika Serikat yang mematenkan penemuan lampu pijar praktis dan fonograf." },
+            { id: 3, birthMath: 1350, deathMath: 1389, displayBirthM: "1350 M", displayBirthH: "751 H", displayDeathM: "1389 M", displayDeathH: "791 H", name: "Hayam Wuruk", category: "Nusantara, Politik", description: "Raja keempat Kerajaan Majapahit bergelar Sri Rajasanagara, memimpin puncak keemasan kerajaan nusantara bersatu." },
+            { id: 4, birthMath: 1452, deathMath: 1519, displayBirthM: "1452 M", displayBirthH: "856 H", displayDeathM: "1519 M", displayDeathH: "925 H", name: "Leonardo da Vinci", category: "Eropa, Seni Budaya", description: "Tokoh utama era Renaisans Italia, pelukis Mona Lisa, desainer penemu futuristik, dan ilmuwan anatomi." }
+        ];
+
+        const initialEras = [
+            { id: 1, startMath: -27, endMath: 476, name: "Kekaisaran Romawi Kuno", wilayah: "Eropa", color: "bg-red-100 border-red-300 text-red-800", description: "Periode peradaban Romawi kuno dengan corak pemerintahan kaisar autokrasi, membentang luas di sekitar Laut Tengah." },
+            { id: 2, startMath: 661, endMath: 750, name: "Kekhalifahan Umayyah", wilayah: "Islam", color: "bg-green-100 border-green-300 text-green-800", description: "Kekhalifahan Islam pertama setelah Khulafaur Rasyidin, berpusat di Damaskus, Suriah, memperluas wilayah hingga Spanyol." },
+            { id: 3, startMath: 1293, endMath: 1527, name: "Kerajaan Majapahit", wilayah: "Nusantara", color: "bg-amber-100 border-amber-300 text-amber-800", description: "Kemaharajaan Hindu-Buddha terbesar di Nusantara, menguasai sebagian besar wilayah kepulauan Asia Tenggara." },
+            { id: 4, startMath: 1368, endMath: 1644, name: "Dinasti Ming", wilayah: "Asia Timur", color: "bg-red-50 border-red-200 text-red-700", description: "Dinasti penguasa Tiongkok yang memicu kemakmuran perdagangan laut, pembangunan Tembok Raksasa, dan perkembangan seni porselen." }
+        ];
+
+        const calculateConversions = (mathYear) => {
+            if (!mathYear && mathYear !== 0) return { m: "", h: "" };
+            const y = parseInt(mathYear);
+            let mStr = y > 0 ? `${y} M` : `${Math.abs(y)} SM`;
+            if (y === 0) mStr = "1 SM"; 
+
+            // Rumus estimasi tahun Hijriah relatif terhadap awal Hijrah (622 M)
+            const hYearExact = (y - 621.5774) * 1.030684; 
+            let hStr = "";
+            if (hYearExact >= 0) {
+                hStr = `${Math.floor(hYearExact) + 1} H`;
+            } else {
+                hStr = `${Math.floor(Math.abs(hYearExact))} SH`; 
+            }
+            return { m: mStr, h: hStr };
+        };
+
+        const SmartEdgeMenu = ({ onNavigate }) => {
+            const [isOpen, setIsOpen] = useState(false);
+
+            useEffect(() => {
+                const closeMenu = () => { if (isOpen) setIsOpen(false); };
+                if (isOpen) window.addEventListener('click', closeMenu);
+                return () => window.removeEventListener('click', closeMenu);
+            }, [isOpen]);
+
+            return (
+                <div className="no-select hidden md:block"> 
+                    {isOpen && <div className="fixed inset-0 z-[9997] bg-black/5 backdrop-blur-[1px] transition-all"></div>}
+                    <div className={`fixed top-1/2 right-0 transform -translate-y-1/2 z-[9998] transition-transform duration-300 cubic-bezier(0.4, 0, 0.2, 1) flex items-center ${isOpen ? 'translate-x-0' : 'translate-x-full'}`} onClick={(e) => e.stopPropagation()}>
+                        <div onClick={() => setIsOpen(!isOpen)} className={`absolute -left-8 bg-orange-950/20 backdrop-blur-sm text-orange-700 rounded-l-xl cursor-pointer flex items-center justify-center hover:bg-orange-600 hover:text-white transition-all duration-300 hover:shadow-[-2px_0_10px_rgba(234,88,12,0.2)] ${isOpen ? 'bg-orange-600 text-white' : ''}`} style={{ width: '32px', height: '48px' }}>
+                            <div className={`transform transition-transform duration-300 scale-75 ${isOpen ? 'rotate-180' : ''}`}><IconChevronLeft /></div>
+                        </div>
+                        <div className="w-56 bg-white/95 backdrop-blur-md shadow-[-5px_0_25px_rgba(234,88,12,0.15)] border-l border-y border-orange-100 rounded-l-2xl p-4 flex flex-col gap-2">
+                            <div className="text-[10px] font-bold text-orange-400 px-2 py-1 uppercase tracking-wider border-b border-orange-100 mb-2">Tambah Data Baru</div>
+                            <button onClick={() => { onNavigate('form_event'); setIsOpen(false); }} className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-orange-50 text-gray-700 hover:text-orange-600 transition-colors text-sm font-semibold w-full text-left">
+                                <span className="bg-orange-100 p-1.5 rounded-md text-orange-600"><IconBook /></span> Peristiwa
+                            </button>
+                            <button onClick={() => { onNavigate('form_figure'); setIsOpen(false); }} className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-orange-50 text-gray-700 hover:text-orange-600 transition-colors text-sm font-semibold w-full text-left">
+                                <span className="bg-orange-100 p-1.5 rounded-md text-orange-600"><IconUsers /></span> Tokoh
+                            </button>
+                            <button onClick={() => { onNavigate('form_era'); setIsOpen(false); }} className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-orange-50 text-gray-700 hover:text-orange-600 transition-colors text-sm font-semibold w-full text-left">
+                                <span className="bg-orange-100 p-1.5 rounded-md text-orange-600"><IconDatabase /></span> Era / Periode
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const AlatDashboard = ({ onNavigate }) => {
+            return (
+                <div className="max-w-4xl mx-auto pb-10">
+                    <div className="mb-6">
+                        <h2 className="text-2xl font-bold text-zamania-900 mb-1">Pusat Alat & Data</h2>
+                        <p className="text-sm text-gray-500">Akses katalog sejarah spesifik, garis waktu teknologi, atau kalkulator penanggalan.</p>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        <div onClick={() => onNavigate('events')} className="bg-white p-4 lg:p-6 rounded-2xl shadow-sm border border-orange-100 hover:border-orange-400 hover:shadow-md cursor-pointer flex flex-col items-center text-center transition-all group">
+                            <div className="bg-orange-50 text-orange-600 p-4 rounded-full mb-3 group-hover:scale-110 transition-transform"><IconBook /></div>
+                            <h3 className="font-bold text-gray-800 text-sm">Peristiwa</h3>
+                            <p className="text-[10px] text-gray-400 mt-1">Katalog Kejadian</p>
+                        </div>
+                        
+                        <div onClick={() => onNavigate('figures')} className="bg-white p-4 lg:p-6 rounded-2xl shadow-sm border border-orange-100 hover:border-orange-400 hover:shadow-md cursor-pointer flex flex-col items-center text-center transition-all group">
+                            <div className="bg-orange-50 text-orange-600 p-4 rounded-full mb-3 group-hover:scale-110 transition-transform"><IconUsers /></div>
+                            <h3 className="font-bold text-gray-800 text-sm">Tokoh</h3>
+                            <p className="text-[10px] text-gray-400 mt-1">Biografi Sejarah</p>
+                        </div>
+
+                        <div onClick={() => onNavigate('eras')} className="bg-white p-4 lg:p-6 rounded-2xl shadow-sm border border-orange-100 hover:border-orange-400 hover:shadow-md cursor-pointer flex flex-col items-center text-center transition-all group">
+                            <div className="bg-orange-50 text-orange-600 p-4 rounded-full mb-3 group-hover:scale-110 transition-transform"><IconDatabase /></div>
+                            <h3 className="font-bold text-gray-800 text-sm">Era / Zaman</h3>
+                            <p className="text-[10px] text-gray-400 mt-1">Daftar Periode</p>
+                        </div>
+                        
+                        <div onClick={() => onNavigate('tech')} className="bg-white p-4 lg:p-6 rounded-2xl shadow-sm border border-orange-100 hover:border-orange-400 hover:shadow-md cursor-pointer flex flex-col items-center text-center transition-all group">
+                            <div className="bg-orange-50 text-orange-600 p-4 rounded-full mb-3 group-hover:scale-110 transition-transform"><IconCpu /></div>
+                            <h3 className="font-bold text-gray-800 text-sm">Teknologi</h3>
+                            <p className="text-[10px] text-gray-400 mt-1">Inovasi Zaman</p>
+                        </div>
+                        
+                        <div onClick={() => onNavigate('converter')} className="bg-white p-4 lg:p-6 rounded-2xl shadow-sm border border-orange-100 hover:border-orange-400 hover:shadow-md cursor-pointer flex flex-col items-center text-center transition-all group">
+                            <div className="bg-orange-50 text-orange-600 p-4 rounded-full mb-3 group-hover:scale-110 transition-transform"><IconCalendar /></div>
+                            <h3 className="font-bold text-gray-800 text-sm">Kalender</h3>
+                            <p className="text-[10px] text-gray-400 mt-1">Konversi Hijriah</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const TimelineView = ({ items, eras, onCardClick }) => {
+            const [activeFilter, setActiveFilter] = useState('Semua'); 
+            const [searchQuery, setSearchQuery] = useState('');
+
+            const displayItems = items.filter(item => {
+                if (searchQuery) {
+                    const q = searchQuery.toLowerCase();
+                    const title = item.type === 'event' ? item.data.title : item.data.name;
+                    const desc = item.data.description || '';
+                    const cat = item.data.category || '';
+                    
+                    let yearM = '';
+                    let yearH = '';
+                    if (item.type === 'event') {
+                        yearM = item.data.displayM || '';
+                        yearH = item.data.displayH || '';
+                    } else if (item.type === 'birth') {
+                        yearM = item.data.displayBirthM || '';
+                        yearH = item.data.displayBirthH || '';
+                    } else if (item.type === 'death') {
+                        yearM = item.data.displayDeathM || '';
+                        yearH = item.data.displayDeathH || '';
+                    }
+
+                    const titleMatch = title.toLowerCase().includes(q);
+                    const descMatch = desc.toLowerCase().includes(q);
+                    const catMatch = cat.toLowerCase().includes(q);
+                    const yearMatch = yearM.toLowerCase().includes(q);
+                    const hMatch = yearH.toLowerCase().includes(q);
+
+                    if (!(titleMatch || descMatch || catMatch || yearMatch || hMatch)) return false;
+                }
+                if (activeFilter === 'Semua') return true;
+                const cat = item.data.category ? item.data.category.toLowerCase() : '';
+                if (activeFilter === 'Islam' && cat.includes('islam')) return true;
+                if (activeFilter === 'Nusantara' && cat.includes('nusantara')) return true;
+                return false;
+            });
+
+            let lastYear = null;
+
+            return (
+                <div className="max-w-4xl mx-auto relative pb-10">
+                    <div className="mb-6">
+                        <h2 className="text-2xl font-bold text-zamania-900 mb-4">Garis Waktu Global</h2>
+                        <div className="flex flex-col sm:flex-row justify-between gap-4">
+                            <div className="flex flex-wrap gap-2">
+                                {['Semua', 'Islam', 'Nusantara'].map(cat => (
+                                    <button key={cat} onClick={() => setActiveFilter(cat)} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${activeFilter === cat ? 'bg-orange-600 text-white shadow-md' : 'bg-white text-orange-700 border border-orange-200 hover:bg-orange-50'}`}>{cat}</button>
+                                ))}
+                            </div>
+                            <div className="relative w-full sm:w-64">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400"><IconSearch /></div>
+                                <input type="text" placeholder="Cari tahun, tokoh, wilayah..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-10 pr-4 py-2 border border-orange-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white shadow-sm" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="relative timeline-line pt-4">
+                        {displayItems.length === 0 ? (
+                            <div className="text-center text-gray-500 py-10 bg-white rounded-xl border border-orange-100 shadow-sm">Tidak ada sejarah untuk pencarian ini.</div>
+                        ) : displayItems.map((item, index) => {
+                            const targetYear = item.type === 'event' ? item.yearMath : (item.type === 'birth' ? item.data.birthMath : item.data.deathMath);
+                            const isSameYearAsPrevious = lastYear === targetYear;
+                            lastYear = targetYear;
+
+                            return (
+                                <div key={index} className={`relative flex flex-col md:flex-row items-center w-full group ${isSameYearAsPrevious ? 'mb-2' : 'mb-8'}`}>
+                                    <div className={`absolute left-6 md:left-1/2 rounded-full bg-orange-600 border-white transform -translate-x-1/2 z-10 group-hover:bg-orange-500 transition-colors ${isSameYearAsPrevious ? 'w-2 h-2 border' : 'w-3 h-3 border-2'}`}></div>
+                                    
+                                    <div className="hidden md:flex w-1/2 justify-end pr-8 text-right flex-col">
+                                        {!isSameYearAsPrevious && (
+                                            <>
+                                                <span className="text-lg font-black text-zamania-900">{item.type === 'event' ? item.data.displayM : (item.type === 'birth' ? item.data.displayBirthM : item.data.displayDeathM)}</span>
+                                                <span className="text-xs font-semibold text-orange-600 mt-0.5">{item.type === 'event' ? item.data.displayH : (item.type === 'birth' ? item.data.displayBirthH : item.data.displayDeathH)}</span>
+                                            </>
+                                        )}
+                                    </div>
+
+                                    <div className="w-full pl-12 md:pl-8 md:w-1/2 text-left">
+                                        {!isSameYearAsPrevious && (
+                                            <div className="md:hidden flex gap-2 items-baseline mb-1">
+                                                <span className="text-base font-black text-zamania-900">{item.type === 'event' ? item.data.displayM : (item.type === 'birth' ? item.data.displayBirthM : item.data.displayDeathM)}</span>
+                                                <span className="text-xs font-semibold text-orange-600">{item.type === 'event' ? item.data.displayH : (item.type === 'birth' ? item.data.displayBirthH : item.data.displayDeathH)}</span>
+                                            </div>
+                                        )}
+                                        <div onClick={() => onCardClick(item)} className="bg-white p-4 rounded-lg shadow-sm border border-orange-50 hover:shadow-md hover:border-orange-300 transition-all cursor-pointer">
+                                            {item.type === 'event' && (
+                                                <>
+                                                    <div className="text-[9px] font-bold text-orange-500 mb-1 tracking-wider uppercase">{item.data.category}</div>
+                                                    <h3 className="text-base font-bold text-gray-800 mb-1">{item.data.title}</h3>
+                                                    <p className="text-gray-600 text-xs line-clamp-2">{item.data.description}</p>
+                                                </>
+                                            )}
+                                            {item.type === 'birth' && (
+                                                <div className="flex items-center gap-2.5">
+                                                    <div className="bg-orange-50 text-orange-600 p-1.5 rounded-full"><IconUsers /></div>
+                                                    <div>
+                                                        <h3 className="text-sm font-bold text-gray-800 leading-tight">Lahirnya {item.data.name}</h3>
+                                                        <p className="text-[10px] text-gray-400 mt-0.5">{item.data.category}</p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {item.type === 'death' && (
+                                                <div className="flex items-center gap-2.5 opacity-75">
+                                                    <div className="bg-gray-100 text-gray-500 p-1.5 rounded-full"><IconUsers /></div>
+                                                    <div>
+                                                        <h3 className="text-sm font-bold text-gray-700 leading-tight">Wafatnya {item.data.name}</h3>
+                                                        <p className="text-[10px] text-gray-400 mt-0.5">{item.data.category}</p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            );
+        };
+
+        const TimeMachineView = ({ events, figures, eras, onCardClick }) => {
+            const [year, setYear] = useState(1453); 
+            const regions = ["Nusantara", "Islam", "Eropa", "Asia Timur", "Asia Selatan", "Amerika", "Afrika"];
+            const handleSlider = (e) => setYear(parseInt(e.target.value));
+
+            return (
+                <div className="max-w-6xl mx-auto pb-10">
+                    <div className="bg-white p-4 md:p-5 rounded-2xl shadow-sm border border-orange-100 mb-6 text-center">
+                        <div className="flex flex-col md:flex-row items-center justify-between gap-4 max-w-5xl mx-auto">
+                            <div className="text-left flex-shrink-0 flex items-center justify-center md:justify-start gap-2 w-full md:w-auto border-b md:border-b-0 pb-3 md:pb-0 border-orange-100">
+                                <div className="text-orange-500"><IconGlobe /></div>
+                                <div>
+                                    <h2 className="text-lg font-black text-gray-800 leading-none">Mesin Waktu</h2>
+                                    <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Komparasi Geografis Paralel</p>
+                                </div>
+                            </div>
+                            
+                            <div className="flex items-center gap-3 w-full md:max-w-lg">
+                                <button onClick={() => setYear(y => y-10)} className="bg-orange-50 hover:bg-orange-100 px-3 py-2 rounded-lg text-xs font-bold text-orange-600">-10</button>
+                                <div className="flex-1 w-full relative">
+                                    <div className="text-center mb-1">
+                                        <input type="number" value={year} onChange={handleSlider} className="text-2xl font-black text-orange-600 bg-transparent border-none outline-none text-center w-28" />
+                                    </div>
+                                    <input type="range" min="-3000" max="2024" value={year} onChange={handleSlider} className="w-full" />
+                                </div>
+                                <button onClick={() => setYear(y => y+10)} className="bg-orange-50 hover:bg-orange-100 px-3 py-2 rounded-lg text-xs font-bold text-orange-600">+10</button>
+                            </div>
+
+                            <div className="text-xs font-bold text-orange-700 bg-orange-50 px-3 py-2 rounded-full border border-orange-200 flex-shrink-0 w-full md:w-auto">
+                                {calculateConversions(year).m} / {calculateConversions(year).h}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        {regions.map(region => {
+                            const activeEra = eras.find(e => e.wilayah === region && year >= e.startMath && year <= e.endMath);
+                            const activeFigures = figures.filter(f => {
+                                const cat = (f.category || '').toLowerCase();
+                                return cat.includes(region.toLowerCase()) && year >= f.birthMath && (!f.deathMath || year <= f.deathMath);
+                            });
+                            const closeEvents = events.filter(e => {
+                                const cat = (e.category || '').toLowerCase();
+                                return cat.includes(region.toLowerCase()) && Math.abs(e.yearMath - year) <= 20;
+                            }).sort((a,b) => Math.abs(a.yearMath - year) - Math.abs(b.yearMath - year));
+
+                            return (
+                                <div key={region} className="bg-white rounded-xl shadow-sm border border-orange-100 overflow-hidden flex flex-col hover:border-orange-300 transition-colors">
+                                    <div className="bg-orange-600 text-white p-3 flex items-center gap-2 font-bold tracking-wide">
+                                        <IconMapPin /> {region}
+                                    </div>
+                                    <div className="p-4 flex-1 flex flex-col gap-4">
+                                        <div>
+                                            <div className="text-[10px] text-gray-400 uppercase font-bold mb-1">Status Era</div>
+                                            {activeEra ? (
+                                                <div onClick={() => onCardClick({type: 'era', data: activeEra, yearMath: activeEra.startMath})} className={`text-sm font-bold px-2 py-1.5 rounded-md border text-center cursor-pointer hover:shadow-md transition-shadow ${activeEra.color}`}>
+                                                    {activeEra.name}
+                                                </div>
+                                            ) : (
+                                                <div className="text-xs text-gray-400 italic">Tidak ada era terdata pada tahun ini.</div>
+                                            )}
+                                        </div>
+
+                                        <div>
+                                            <div className="text-[10px] text-orange-400 uppercase font-bold mb-1">Peristiwa Terdekat</div>
+                                            {closeEvents.length > 0 ? (
+                                                <div className="space-y-2">
+                                                    {closeEvents.slice(0, 2).map(e => (
+                                                        <div key={e.id} onClick={() => onCardClick({type:'event', data:e, yearMath:e.yearMath})} className="bg-orange-50/50 p-2 rounded border border-orange-100 cursor-pointer hover:bg-orange-100">
+                                                            <div className="text-xs font-bold text-gray-800 leading-tight">{e.title}</div>
+                                                            <div className="text-[10px] font-semibold text-orange-600">{e.displayM}</div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <div className="text-xs text-gray-400 italic">Tidak ada data peristiwa terdekat.</div>
+                                            )}
+                                        </div>
+
+                                        <div className="mt-auto">
+                                            <div className="text-[10px] text-emerald-400 uppercase font-bold mb-1">Tokoh yang Hidup</div>
+                                            {activeFigures.length > 0 ? (
+                                                <div className="flex flex-wrap gap-1">
+                                                    {activeFigures.map(f => (
+                                                        <span key={f.id} onClick={() => onCardClick({type:'birth', data:f, yearMath:f.birthMath})} className="text-[10px] font-bold bg-emerald-50 border border-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded cursor-pointer hover:bg-emerald-100">
+                                                            {f.name} (Usia {year - f.birthMath})
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <div className="text-xs text-gray-400 italic">Tidak ada tokoh terdata yang hidup.</div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            );
+        };
+
+        const DateConverterView = ({ onBack }) => {
+            const [masehiDate, setMasehiDate] = useState('');
+            const [hijriOffset, setHijriOffset] = useState(0);
+
+            const computedData = useMemo(() => {
+                if (!masehiDate) return null;
+                try {
+                    const dateObj = new Date(masehiDate);
+                    const dayStr = new Intl.DateTimeFormat('id-ID', { weekday: 'long' }).format(dateObj);
+                    const masehiFormatted = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).format(dateObj);
+                    
+                    const adjustedDate = new Date(dateObj);
+                    adjustedDate.setDate(adjustedDate.getDate() + hijriOffset);
+                    
+                    const parts = new Intl.DateTimeFormat('en-US-u-ca-islamic-umalqura', { day: 'numeric', month: 'numeric', year: 'numeric' }).formatToParts(adjustedDate);
+                    
+                    const getPartValue = (type) => {
+                        const found = parts.find(p => p.type === type);
+                        return found ? found.value : '';
+                    };
+
+                    const hDay = getPartValue('day');
+                    const hMonthNum = parseInt(getPartValue('month') || '1', 10);
+                    const hYear = getPartValue('year').replace(/\D/g, ''); 
+                    
+                    const namaBulanHijriah = ["Muharram", "Safar", "Rabiul Awal", "Rabiul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Zulqaidah", "Zulhijjah"];
+                    
+                    const validatedMonthIndex = isNaN(hMonthNum) || hMonthNum < 1 || hMonthNum > 12 ? 0 : hMonthNum - 1;
+                    const hijriahFormatted = `${hDay} ${namaBulanHijriah[validatedMonthIndex]} ${hYear} H`;
+
+                    return { dayStr, masehiFormatted, hijriahFormatted };
+                } catch (err) {
+                    console.error("Format Intl Hijriah Gagal, menggunakan estimasi kasar: ", err);
+                    const dateObj = new Date(masehiDate);
+                    const dayStr = new Intl.DateTimeFormat('id-ID', { weekday: 'long' }).format(dateObj);
+                    const masehiFormatted = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).format(dateObj);
+                    const estimate = calculateConversions(dateObj.getFullYear() + hijriOffset);
+                    return { dayStr, masehiFormatted, hijriahFormatted: `Pertengahan Tahun ${estimate.h}` };
+                }
+            }, [masehiDate, hijriOffset]);
+
+            return (
+                <div className="max-w-4xl mx-auto pb-10">
+                    <button onClick={onBack} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors mb-6 font-medium text-xs"><IconArrowLeft /> Kembali ke Alat</button>
+                    <div className="mb-6 flex items-center gap-3">
+                        <div className="bg-orange-100 text-orange-600 p-2 rounded-lg"><IconCalendar /></div>
+                        <h2 className="text-2xl font-black text-zamania-900">Kalkulator Lahir</h2>
+                    </div>
+
+                    <div className="bg-white p-6 md:p-10 rounded-2xl shadow-sm border border-orange-100 flex flex-col md:flex-row gap-8 items-center">
+                        <div className="w-full md:w-2/5 flex flex-col gap-4">
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">Pilih Tanggal Lahir (Masehi)</label>
+                                <input type="date" value={masehiDate} onChange={(e) => { setMasehiDate(e.target.value); setHijriOffset(0); }} className="w-full p-4 border border-orange-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none text-lg text-gray-700 bg-orange-50 cursor-pointer" />
+                            </div>
+                            {computedData && (
+                                <div className="bg-orange-50 p-4 rounded-xl border border-orange-200 mt-2 shadow-inner">
+                                    <label className="block text-[11px] font-bold text-orange-800 mb-3 text-center uppercase tracking-wide">Koreksi Hari (Beda Rukyat)</label>
+                                    <div className="flex items-center gap-2">
+                                        <button onClick={() => setHijriOffset(o => o - 1)} className="flex-1 py-2 bg-white border border-orange-200 rounded-lg text-orange-600 font-bold hover:bg-orange-100">-1 Hari</button>
+                                        <span className="w-12 text-center font-black text-gray-800 text-lg">{hijriOffset > 0 ? `+${hijriOffset}` : hijriOffset}</span>
+                                        <button onClick={() => setHijriOffset(o => o + 1)} className="flex-1 py-2 bg-white border border-orange-200 rounded-lg text-orange-600 font-bold hover:bg-orange-100">+1 Hari</button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="w-full md:w-3/5">
+                            {computedData ? (
+                                <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 md:p-8 rounded-xl border border-orange-200 text-center relative overflow-hidden shadow-inner h-full">
+                                    <div className="absolute top-0 right-0 p-4 opacity-10 text-orange-900 transform rotate-12 scale-150"><IconCalendar /></div>
+                                    <div className="relative z-10">
+                                        <p className="text-xs font-bold text-orange-600 uppercase tracking-widest mb-1">Hari Kelahiran</p>
+                                        <h3 className="text-3xl font-black text-gray-900 mb-6">{computedData.dayStr}</h3>
+                                        <div className="flex flex-col gap-3">
+                                            <div className="bg-white/60 p-4 rounded-lg backdrop-blur-sm border border-white">
+                                                <p className="text-xs text-gray-500 font-bold mb-1">Tanggal Masehi</p>
+                                                <p className="text-lg font-bold text-gray-800">{computedData.masehiFormatted}</p>
+                                            </div>
+                                            <div className="bg-white/90 p-4 rounded-xl backdrop-blur-sm border border-white shadow-sm">
+                                                <p className="text-xs text-orange-600 font-bold mb-1">Tanggal Hijriah</p>
+                                                <p className="text-2xl md:text-3xl font-black text-orange-700">{computedData.hijriahFormatted}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center h-full min-h-[300px] border-2 border-dashed border-orange-200 rounded-xl text-gray-400 bg-orange-50/20">
+                                    <IconCalendar />
+                                    <p className="mt-3 text-sm font-medium text-center px-4">Pilih tanggal kelahiran di sebelah kiri untuk melihat konversi.</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const EventsList = ({ items, onCardClick, onBack }) => {
+            const [activeFilter, setActiveFilter] = useState('Semua'); 
+            const displayItems = items.filter(item => {
+                if (activeFilter === 'Semua') return true;
+                const cat = item.category ? item.category.toLowerCase() : '';
+                if (activeFilter === 'Islam' && cat.includes('islam')) return true;
+                if (activeFilter === 'Nusantara' && cat.includes('nusantara')) return true;
+                if (activeFilter === 'Perang' && cat.includes('perang')) return true;
+                return false;
+            }).sort((a, b) => a.yearMath - b.yearMath);
+
+            return (
+                <div className="max-w-5xl mx-auto pb-10">
+                    <button onClick={onBack} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors mb-6 font-medium text-xs"><IconArrowLeft /> Kembali ke Alat</button>
+                    <div className="mb-8">
+                        <div className="flex items-center gap-3 mb-2">
+                            <div className="bg-orange-100 text-orange-600 p-2 rounded-lg"><IconBook /></div>
+                            <h2 className="text-2xl font-black text-zamania-900">Daftar Peristiwa</h2>
+                        </div>
+                        <div className="flex flex-wrap gap-2 border-b border-orange-100 pb-4 mt-4">
+                            {['Semua', 'Islam', 'Nusantara', 'Perang'].map(cat => (
+                                <button key={cat} onClick={() => setActiveFilter(cat)} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${activeFilter === cat ? 'bg-orange-600 text-white shadow-md' : 'bg-white text-orange-600 border border-orange-200 hover:bg-orange-50'}`}>{cat}</button>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {displayItems.map(item => (
+                            <div key={item.id} onClick={() => onCardClick({type: 'event', data: item, yearMath: item.yearMath})} className="bg-white p-5 rounded-xl border border-orange-100 shadow-sm hover:shadow-md hover:border-orange-300 cursor-pointer transition-all flex flex-col h-full">
+                                <div className="text-[10px] font-bold text-orange-500 uppercase tracking-wider mb-2">{item.category || 'Umum'}</div>
+                                <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
+                                <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 mb-3 bg-orange-50 p-2 rounded w-fit"><IconClock /> {item.displayM} • {item.displayH}</div>
+                                <p className="text-gray-600 text-sm line-clamp-3 mt-auto">{item.description}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const FiguresList = ({ items, onCardClick, onBack }) => {
+            const [activeFilter, setActiveFilter] = useState('Semua'); 
+            const displayItems = items.filter(item => {
+                if (activeFilter === 'Semua') return true;
+                const cat = item.category ? item.category.toLowerCase() : '';
+                if (activeFilter === 'Islam' && cat.includes('islam')) return true;
+                if (activeFilter === 'Nusantara' && cat.includes('nusantara')) return true;
+                if (activeFilter === 'Teknologi' && cat.includes('teknologi')) return true;
+                return false;
+            }).sort((a, b) => a.birthMath - b.birthMath);
+
+            return (
+                <div className="max-w-5xl mx-auto pb-10">
+                    <button onClick={onBack} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors mb-6 font-medium text-xs"><IconArrowLeft /> Kembali ke Alat</button>
+                    <div className="mb-8">
+                        <div className="flex items-center gap-3 mb-2">
+                            <div className="bg-orange-100 text-orange-600 p-2 rounded-lg"><IconUsers /></div>
+                            <h2 className="text-2xl font-black text-zamania-900">Tokoh Sejarah</h2>
+                        </div>
+                        <div className="flex flex-wrap gap-2 border-b border-orange-100 pb-4 mt-4">
+                            {['Semua', 'Islam', 'Nusantara', 'Teknologi'].map(cat => (
+                                <button key={cat} onClick={() => setActiveFilter(cat)} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${activeFilter === cat ? 'bg-orange-600 text-white shadow-md' : 'bg-white text-orange-600 border border-orange-200 hover:bg-orange-50'}`}>{cat}</button>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {displayItems.map(item => (
+                            <div key={item.id} onClick={() => onCardClick({type: 'birth', data: item, yearMath: item.birthMath})} className="bg-white p-5 rounded-xl border border-orange-100 shadow-sm hover:shadow-md hover:border-orange-300 cursor-pointer transition-all flex flex-col items-center text-center h-full">
+                                <div className="w-16 h-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mb-4"><IconUsers /></div>
+                                <div className="text-[10px] font-bold text-orange-500 uppercase tracking-wider mb-1">{item.category || 'Umum'}</div>
+                                <h3 className="text-lg font-bold text-gray-900 mb-2">{item.name}</h3>
+                                <div className="text-xs font-semibold text-gray-500 mb-3">{item.displayBirthM} - {item.displayDeathM || 'Sekarang'}</div>
+                                <p className="text-gray-600 text-sm line-clamp-3 mt-auto">{item.description}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const ErasList = ({ items, onCardClick, onBack }) => {
+            const [activeFilter, setActiveFilter] = useState('Semua'); 
+            const displayItems = items.filter(item => {
+                if (activeFilter === 'Semua') return true;
+                const cat = item.wilayah ? item.wilayah.toLowerCase() : '';
+                if (activeFilter === 'Islam' && cat.includes('islam')) return true;
+                if (activeFilter === 'Nusantara' && cat.includes('nusantara')) return true;
+                if (activeFilter === 'Eropa' && cat.includes('eropa')) return true;
+                return false;
+            }).sort((a, b) => a.startMath - b.startMath);
+
+            return (
+                <div className="max-w-5xl mx-auto pb-10">
+                    <button onClick={onBack} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors mb-6 font-medium text-xs"><IconArrowLeft /> Kembali ke Alat</button>
+                    <div className="mb-8">
+                        <div className="flex items-center gap-3 mb-2">
+                            <div className="bg-orange-100 text-orange-600 p-2 rounded-lg"><IconDatabase /></div>
+                            <h2 className="text-2xl font-black text-zamania-900">Era & Zaman</h2>
+                        </div>
+                        <div className="flex flex-wrap gap-2 border-b border-orange-100 pb-4 mt-4">
+                            {['Semua', 'Islam', 'Nusantara', 'Eropa'].map(cat => (
+                                <button key={cat} onClick={() => setActiveFilter(cat)} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${activeFilter === cat ? 'bg-orange-600 text-white shadow-md' : 'bg-white text-orange-600 border border-orange-200 hover:bg-orange-50'}`}>{cat}</button>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {displayItems.map(item => (
+                            <div key={item.id} onClick={() => onCardClick({type: 'era', data: item, yearMath: item.startMath})} className={`bg-white p-5 rounded-xl border border-orange-100 shadow-sm hover:shadow-md cursor-pointer transition-all flex flex-col h-full border-l-4 ${item.color.split(' ')[1]}`}>
+                                <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">Wilayah: {item.wilayah || 'Umum'}</div>
+                                <h3 className="text-lg font-bold text-gray-900 mb-2">{item.name}</h3>
+                                <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 mb-3 bg-orange-50 p-2 rounded w-fit">
+                                    <IconClock /> {calculateConversions(item.startMath).m} s/d {calculateConversions(item.endMath).m}
+                                </div>
+                                <p className="text-gray-600 text-sm line-clamp-3 mt-auto">{item.description || 'Tidak ada deskripsi.'}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const TechView = ({ events, figures, onCardClick, onBack }) => {
+            const [activeTab, setActiveTab] = useState('penemuan'); 
+            const techEvents = useMemo(() => events.filter(e => (e.category || '').toLowerCase().includes('teknologi')).sort((a,b) => a.yearMath - b.yearMath), [events]);
+            const techFigures = useMemo(() => figures.filter(f => (f.category || '').toLowerCase().includes('teknologi')).sort((a,b) => f.birthMath - f.birthMath), [figures]);
+
+            return (
+                <div className="max-w-5xl mx-auto pb-10">
+                    <button onClick={onBack} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors mb-6 font-medium text-xs"><IconArrowLeft /> Kembali ke Alat</button>
+                    <div className="mb-8">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="bg-orange-100 text-orange-600 p-2 rounded-lg"><IconCpu /></div>
+                            <h2 className="text-2xl font-black text-zamania-900">Teknologi</h2>
+                        </div>
+                        <div className="flex gap-4 border-b border-orange-100">
+                            <button onClick={() => setActiveTab('penemuan')} className={`pb-3 font-bold text-sm px-2 border-b-2 transition-colors ${activeTab === 'penemuan' ? 'border-orange-600 text-orange-600' : 'border-transparent text-gray-500 hover:text-gray-800'}`}>Penemuan</button>
+                            <button onClick={() => setActiveTab('penemu')} className={`pb-3 font-bold text-sm px-2 border-b-2 transition-colors ${activeTab === 'penemu' ? 'border-orange-600 text-orange-600' : 'border-transparent text-gray-500 hover:text-gray-800'}`}>Penemu</button>
+                        </div>
+                    </div>
+                    {activeTab === 'penemuan' && (
+                        <div className="space-y-4">
+                            {techEvents.map(item => (
+                                <div key={item.id} onClick={() => onCardClick({type: 'event', data: item, yearMath: item.yearMath})} className="bg-white p-4 rounded-xl border border-orange-100 shadow-sm hover:shadow-md hover:border-orange-300 cursor-pointer transition-all flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                                    <div className="bg-orange-50 px-4 py-2 rounded-lg text-center min-w-[120px]">
+                                        <div className="font-black text-orange-900 text-lg">{item.displayM.split(' ')[item.displayM.split(' ').length - 2] || item.yearMath}</div>
+                                        <div className="text-xs font-bold text-orange-600">{item.displayM.includes('SM') ? 'SM' : 'Masehi'}</div>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-lg font-bold text-gray-900">{item.title}</h3>
+                                        <p className="text-gray-600 text-sm mt-1 line-clamp-2">{item.description}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    {activeTab === 'penemu' && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {techFigures.map(item => (
+                                <div key={item.id} onClick={() => onCardClick({type: 'birth', data: item, yearMath: item.birthMath})} className="bg-white p-4 rounded-xl border border-orange-100 shadow-sm hover:shadow-md hover:border-orange-300 cursor-pointer transition-all flex gap-4 items-center">
+                                    <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center flex-shrink-0"><IconUsers /></div>
+                                    <div>
+                                        <h3 className="text-base font-bold text-gray-900">{item.name}</h3>
+                                        <div className="text-xs font-medium text-gray-500 mt-0.5">Masa: {item.displayBirthM} - {item.displayDeathM || '?'}</div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const DetailView = ({ item, onBack, eras }) => {
+            const { type, data } = item;
+            return (
+                <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm border border-orange-100 overflow-hidden pb-10">
+                    <div className="p-6 md:p-10">
+                        <button onClick={onBack} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors mb-8 font-medium"><IconArrowLeft /> Kembali</button>
+                        
+                        {type === 'event' && (
+                            <div>
+                                <div className="inline-block px-3 py-1 bg-orange-100 text-orange-700 text-[10px] font-bold uppercase tracking-wider rounded-full mb-4">{data.category}</div>
+                                <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-6">{data.title}</h2>
+                                <div className="flex flex-wrap gap-4 mb-8">
+                                    <div className="bg-orange-50 p-4 rounded-xl border border-orange-100 flex-1 min-w-[150px]"><p className="text-xs text-orange-500 font-semibold mb-1">Masehi</p><p className="text-xl font-bold text-orange-800">{data.displayM}</p></div>
+                                    <div className="bg-orange-100 p-4 rounded-xl border border-orange-200 flex-1 min-w-[150px]"><p className="text-xs text-orange-600 font-semibold mb-1">Hijriah</p><p className="text-xl font-bold text-orange-800">{data.displayH}</p></div>
+                                </div>
+                                <div className="prose prose-sm md:prose-base text-gray-700"><h3 className="text-lg font-bold text-gray-900 mb-2">Deskripsi Lengkap</h3><p>{data.description}</p></div>
+                            </div>
+                        )}
+                        {(type === 'birth' || type === 'death') && (
+                            <div>
+                                <div className="inline-block px-3 py-1 bg-orange-100 text-orange-700 text-[10px] font-bold uppercase tracking-wider rounded-full mb-4">Tokoh: {data.category}</div>
+                                <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-6">{data.name}</h2>
+                                <div className="grid md:grid-cols-2 gap-4 mb-8">
+                                    <div className="bg-orange-50 p-4 rounded-xl border border-orange-100"><p className="text-xs text-orange-600 font-semibold mb-2">Lahir</p><p className="font-bold text-gray-800">{data.displayBirthM}</p><p className="text-sm text-orange-700 font-medium">{data.displayBirthH}</p></div>
+                                    {data.deathMath && <div className="bg-gray-50 p-4 rounded-xl border border-orange-200"><p className="text-xs text-gray-500 font-semibold mb-2">Wafat</p><p className="font-bold text-gray-800">{data.displayDeathM}</p><p className="text-sm text-gray-600 font-medium">{data.displayDeathH}</p></div>}
+                                </div>
+                                <div className="prose prose-sm md:prose-base text-gray-700"><h3 className="text-lg font-bold text-gray-900 mb-2">Biografi</h3><p>{data.description}</p></div>
+                            </div>
+                        )}
+                        {type === 'era' && (
+                            <div>
+                                <div className="inline-block px-3 py-1 bg-orange-100 text-orange-700 text-[10px] font-bold uppercase tracking-wider rounded-full mb-4">Wilayah: {data.wilayah}</div>
+                                <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-6">{data.name}</h2>
+                                <div className="flex flex-wrap gap-4 mb-8">
+                                    <div className="bg-orange-50 p-4 rounded-xl border border-orange-100 flex-1 min-w-[200px]">
+                                        <p className="text-xs text-orange-600 font-semibold mb-1">Rentang Waktu Kekuasaan</p>
+                                        <p className="text-xl font-bold text-orange-800">{calculateConversions(data.startMath).m} - {calculateConversions(data.endMath).m}</p>
+                                    </div>
+                                </div>
+                                <div className="prose prose-sm md:prose-base text-gray-700"><h3 className="text-lg font-bold text-gray-900 mb-2">Deskripsi Periode</h3><p>{data.description || 'Deskripsi belum ditambahkan.'}</p></div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const FormEvent = ({ onSave, onCancel }) => {
+            const [formData, setFormData] = useState({ yearMath: '', displayM: '', displayH: '', title: '', wilayah: '', tema: '', description: '' });
+            const handleMathYearChange = (e) => { const v=e.target.value; const c=calculateConversions(v); setFormData({...formData, yearMath:v, displayM:c.m, displayH:c.h}); };
+            
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                const finalCategory = `${formData.wilayah}, ${formData.tema}`;
+                onSave({...formData, category: finalCategory, yearMath: parseInt(formData.yearMath)});
+            };
+
+            return (
+                <div className="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-orange-100 pb-20">
+                    <div className="flex justify-between items-center mb-6 border-b pb-4"><h2 className="text-xl font-bold text-gray-800">Tambah Peristiwa</h2><button onClick={onCancel} className="text-gray-400 font-bold hover:text-red-500">Batal</button></div>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <input type="number" required value={formData.yearMath} onChange={handleMathYearChange} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Tahun Matematis (Misal: 1453)" />
+                        <div className="grid grid-cols-2 gap-2">
+                            <input type="text" value={formData.displayM} onChange={e=>setFormData({...formData,displayM:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none" placeholder="Tampil Masehi" />
+                            <input type="text" value={formData.displayH} onChange={e=>setFormData({...formData,displayH:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none" placeholder="Tampil Hijriah" />
+                        </div>
+                        <input type="text" required value={formData.title} onChange={e=>setFormData({...formData,title:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Judul Peristiwa" />
+                        
+                        <div className="grid grid-cols-2 gap-2">
+                            <select required value={formData.wilayah} onChange={e=>setFormData({...formData, wilayah:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
+                                <option value="" disabled>Pilih Wilayah...</option>
+                                <option value="Nusantara">Nusantara</option>
+                                <option value="Islam">Timur Tengah / Islam</option>
+                                <option value="Eropa">Eropa & Barat</option>
+                                <option value="Asia Timur">Asia Timur</option>
+                                <option value="Asia Selatan">Asia Selatan</option>
+                                <option value="Amerika">Amerika</option>
+                                <option value="Afrika">Afrika</option>
+                            </select>
+                            <select required value={formData.tema} onChange={e=>setFormData({...formData, tema:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
+                                <option value="" disabled>Pilih Tema...</option>
+                                <option value="Agama">Agama & Kepercayaan</option>
+                                <option value="Perang">Militer & Perang</option>
+                                <option value="Politik">Politik & Kekaisaran</option>
+                                <option value="Teknologi">Sains & Teknologi</option>
+                                <option value="Seni Budaya">Seni & Budaya</option>
+                                <option value="Umum">Umum</option>
+                            </select>
+                        </div>
+                        <textarea required rows="4" value={formData.description} onChange={e=>setFormData({...formData,description:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Deskripsi Sejarah"></textarea>
+                        <button type="submit" className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-lg mt-2 transition-colors">Simpan Peristiwa</button>
+                    </form>
+                </div>
+            );
+        };
+
+        const FormFigure = ({ onSave, onCancel }) => {
+            const [formData, setFormData] = useState({ birthMath: '', displayBirthM: '', displayBirthH: '', name: '', wilayah: '', tema: '', description: '' });
+            const handleMathYearChange = (e) => { const v=e.target.value; const c=calculateConversions(v); setFormData({...formData, birthMath:v, displayBirthM:c.m, displayBirthH:c.h}); };
+            
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                const finalCategory = `${formData.wilayah}, ${formData.tema}`;
+                onSave({...formData, category: finalCategory, birthMath: parseInt(formData.birthMath)});
+            };
+
+            return (
+                <div className="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-orange-100 pb-20">
+                    <div className="flex justify-between items-center mb-6 border-b pb-4"><h2 className="text-xl font-bold text-gray-800">Tambah Tokoh</h2><button onClick={onCancel} className="text-gray-400 font-bold hover:text-red-500">Batal</button></div>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <input type="text" required value={formData.name} onChange={e=>setFormData({...formData,name:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Nama Tokoh" />
+                        <input type="number" required value={formData.birthMath} onChange={handleMathYearChange} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Tahun Lahir (Math)" />
+                        <div className="grid grid-cols-2 gap-2">
+                            <input type="text" value={formData.displayBirthM} onChange={e=>setFormData({...formData,displayBirthM:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none" placeholder="Tampil Lahir Masehi" />
+                            <input type="text" value={formData.displayBirthH} onChange={e=>setFormData({...formData,displayBirthH:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none" placeholder="Tampil Lahir Hijriah" />
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                            <select required value={formData.wilayah} onChange={e=>setFormData({...formData, wilayah:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
+                                <option value="" disabled>Asal Wilayah...</option>
+                                <option value="Nusantara">Nusantara</option>
+                                <option value="Islam">Timur Tengah / Islam</option>
+                                <option value="Eropa">Eropa & Barat</option>
+                                <option value="Asia Timur">Asia Timur</option>
+                                <option value="Asia Selatan">Asia Selatan</option>
+                                <option value="Amerika">Amerika</option>
+                                <option value="Afrika">Afrika</option>
+                            </select>
+                            <select required value={formData.tema} onChange={e=>setFormData({...formData, tema:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
+                                <option value="" disabled>Profesi / Peran...</option>
+                                <option value="Agama">Ulama / Tokoh Agama</option>
+                                <option value="Politik">Raja / Pemimpin</option>
+                                <option value="Teknologi">Ilmuwan / Penemu</option>
+                                <option value="Perang">Jenderal militer</option>
+                                <option value="Seni Budaya">Seniman / Sastrawan</option>
+                                <option value="Umum">Umum</option>
+                            </select>
+                        </div>
+                        <textarea required rows="4" value={formData.description} onChange={e=>setFormData({...formData,description:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Biografi Singkat"></textarea>
+                        <button type="submit" className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-lg mt-2 transition-colors">Simpan Tokoh</button>
+                    </form>
+                </div>
+            );
+        };
+        
+        const FormEra = ({ onSave, onCancel }) => {
+            const [formData, setFormData] = useState({ startMath: '', endMath: '', name: '', wilayah: '', description: '', color: 'bg-orange-100 border-orange-300 text-orange-800' });
+            
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                onSave({...formData, startMath: parseInt(formData.startMath), endMath: parseInt(formData.endMath)});
+            };
+
+            return (
+                <div className="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-orange-100 pb-20">
+                    <div className="flex justify-between items-center mb-6 border-b pb-4"><h2 className="text-xl font-bold text-gray-800">Tambah Era / Zaman</h2><button onClick={onCancel} className="text-gray-400 font-bold hover:text-red-500">Batal</button></div>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <input type="text" required value={formData.name} onChange={e=>setFormData({...formData,name:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Nama Era (Misal: Bani Umayyah)" />
+                        <select required value={formData.wilayah} onChange={e=>setFormData({...formData, wilayah:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
+                            <option value="" disabled>Pusat Wilayah Kekuasaan...</option>
+                            <option value="Nusantara">Nusantara</option>
+                            <option value="Islam">Timur Tengah / Islam</option>
+                            <option value="Eropa">Eropa & Barat</option>
+                            <option value="Asia Timur">Asia Timur</option>
+                            <option value="Asia Selatan">Asia Selatan</option>
+                            <option value="Amerika">Amerika</option>
+                            <option value="Afrika">Afrika</option>
+                        </select>
+                        <div className="grid grid-cols-2 gap-2">
+                            <input type="number" required value={formData.startMath} onChange={e=>setFormData({...formData,startMath:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Tahun Mulai Berdiri (Math)" />
+                            <input type="number" required value={formData.endMath} onChange={e=>setFormData({...formData,endMath:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Tahun Runtuh (Math)" />
+                        </div>
+                        <textarea required rows="4" value={formData.description} onChange={e=>setFormData({...formData,description:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Deskripsi Singkat Era Ini..."></textarea>
+                        
+                        <button type="submit" className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-lg mt-4 transition-colors">Simpan Era</button>
+                    </form>
+                </div>
+            );
+        }
+
+        const App = () => {
+            const [events, setEvents] = useState(initialEvents);
+            const [figures, setFigures] = useState(initialFigures);
+            const [eras, setEras] = useState(initialEras);
+            const [activeMenu, setActiveMenu] = useState('timeline'); 
+            const [selectedItem, setSelectedItem] = useState(null); 
+            const [syncStatus, setSyncStatus] = useState(''); // State untuk loading indikator
+
+            const timelineData = useMemo(() => {
+                let items = [];
+                events.forEach(e => items.push({ type: 'event', yearMath: e.yearMath, data: e }));
+                figures.forEach(f => {
+                    if(f.birthMath) items.push({ type: 'birth', yearMath: f.birthMath, data: f });
+                    if(f.deathMath) items.push({ type: 'death', yearMath: f.deathMath, data: f });
+                });
+                return items.sort((a, b) => a.yearMath - b.yearMath);
+            }, [events, figures]);
+
+            const saveToDatabase = async (type, data) => {
+                // 1. Meminta Password via Prompt Browser
+                const adminPassword = window.prompt("Otorisasi Admin: Masukkan Password untuk menyimpan data ke Cloud.");
+                if (!adminPassword) return; // Batal jika kosong/cancel
+
+                setSyncStatus('Menyimpan ke Cloud...');
+
+                try {
+                    // 2. Mengirim POST request ke Google Sheets
+                    const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // 'text/plain' menghindari masalah CORS preflight
+                        body: JSON.stringify({
+                            password: adminPassword,
+                            action: `add_${type}`,
+                            data: data
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        // 3. Update tampilan lokal jika berhasil
+                        const newItem = result.data;
+                        if (type === 'event') setEvents([...events, newItem]);
+                        if (type === 'figure') setFigures([...figures, newItem]);
+                        if (type === 'era') setEras([...eras, newItem]);
+                        
+                        setSyncStatus('Tersimpan di Cloud!');
+                        setTimeout(() => { setSyncStatus(''); setActiveMenu('timeline'); }, 1500);
+                    } else {
+                        // 4. Jika password salah atau gagal
+                        alert("Gagal Menyimpan: " + result.message);
+                        setSyncStatus('');
+                    }
+                } catch (error) {
+                    console.error(error);
+                    alert("Gagal menyimpan. Pastikan koneksi internet stabil dan URL Apps Script benar.");
+                    setSyncStatus('');
+                }
+            };
+
+            const handleMenuChange = (menu) => {
+                setSelectedItem(null);
+                setActiveMenu(menu);
+            };
+
+            const isAlatActive = ['alat_home', 'events', 'figures', 'eras', 'tech', 'converter'].includes(activeMenu);
+
+            return (
+                <div className="flex flex-col h-screen overflow-hidden bg-zamania-50">
+                    {/* TOP HEADER */}
+                    <header className="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-4 shadow-md z-20 flex-shrink-0 flex justify-between items-center border-none">
+                        <div>
+                            <h1 className="text-xl font-extrabold tracking-tight">ZAMANIA</h1>
+                            <p className="text-[10px] text-orange-100 font-semibold tracking-wider uppercase leading-none mt-1">Kalender Sejarah</p>
+                        </div>
+                        
+                        {/* Status Menyimpan (Indikator Loading) */}
+                        {syncStatus && (
+                            <div className="absolute top-14 left-1/2 transform -translate-x-1/2 bg-white text-orange-600 px-4 py-1.5 rounded-full text-xs font-bold shadow-lg animate-pulse z-50 border border-orange-200">
+                                {syncStatus}
+                            </div>
+                        )}
+
+                        {/* Mobile Add Buttons */}
+                        <div className="md:hidden flex gap-2">
+                             <button onClick={() => handleMenuChange('form_event')} className="text-white bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors" title="Tambah Peristiwa"><IconBook /></button>
+                             <button onClick={() => handleMenuChange('form_figure')} className="text-white bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors" title="Tambah Tokoh"><IconUsers /></button>
+                             <button onClick={() => handleMenuChange('form_era')} className="text-white bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors" title="Tambah Era"><IconDatabase /></button>
+                        </div>
+                    </header>
+
+                    {/* MAIN CONTENT AREA */}
+                    <div className="flex-1 p-4 md:p-6 scrollable-content relative">
+                        {selectedItem ? (
+                            <DetailView item={selectedItem} onBack={() => setSelectedItem(null)} eras={eras} />
+                        ) : (
+                            <div>
+                                {activeMenu === 'timeline' && <TimelineView items={timelineData} eras={eras} onCardClick={setSelectedItem} />}
+                                {activeMenu === 'time_machine' && <TimeMachineView events={events} figures={figures} eras={eras} onCardClick={setSelectedItem} />}
+                                {activeMenu === 'alat_home' && <AlatDashboard onNavigate={handleMenuChange} />}
+                                {activeMenu === 'events' && <EventsList items={events} onCardClick={item => setSelectedItem({type: 'event', data: item, yearMath: item.yearMath})} onBack={() => handleMenuChange('alat_home')} />}
+                                {activeMenu === 'figures' && <FiguresList items={figures} onCardClick={item => setSelectedItem({type: 'birth', data: item, yearMath: item.birthMath})} onBack={() => handleMenuChange('alat_home')} />}
+                                {activeMenu === 'eras' && <ErasList items={eras} onCardClick={item => setSelectedItem({type: 'era', data: item, yearMath: item.startMath})} onBack={() => handleMenuChange('alat_home')} />}
+                                {activeMenu === 'tech' && <TechView events={events} figures={figures} onCardClick={setSelectedItem} onBack={() => handleMenuChange('alat_home')} />}
+                                {activeMenu === 'converter' && <DateConverterView onBack={() => handleMenuChange('alat_home')} />}
+                                {activeMenu === 'form_event' && <FormEvent onSave={(data) => saveToDatabase('event', data)} onCancel={() => handleMenuChange('timeline')} />}
+                                {activeMenu === 'form_figure' && <FormFigure onSave={(data) => saveToDatabase('figure', data)} onCancel={() => handleMenuChange('timeline')} />}
+                                {activeMenu === 'form_era' && <FormEra onSave={(data) => saveToDatabase('era', data)} onCancel={() => handleMenuChange('timeline')} />}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* BOTTOM NAVIGATION BAR */}
+                    <nav className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-orange-600 to-orange-700 bottom-nav-shadow z-40 pb-safe">
+                        <div className="max-w-md mx-auto flex justify-between items-center h-16 px-6">
+                            <button onClick={() => handleMenuChange('timeline')} className={`flex flex-col items-center justify-center w-full h-full transition-all ${activeMenu === 'timeline' ? 'text-white scale-110 font-bold' : 'text-orange-200 hover:text-white'}`}>
+                                <IconClock />
+                                <span className="text-[10px] font-bold mt-1">Garis Waktu</span>
+                            </button>
+                            <button onClick={() => handleMenuChange('time_machine')} className={`flex flex-col items-center justify-center w-full h-full transition-all ${activeMenu === 'time_machine' ? 'text-white scale-110 font-bold' : 'text-orange-200 hover:text-white'}`}>
+                                <IconGlobe />
+                                <span className="text-[10px] font-bold mt-1">Mesin Waktu</span>
+                            </button>
+                            <button onClick={() => handleMenuChange('alat_home')} className={`flex flex-col items-center justify-center w-full h-full transition-all ${isAlatActive ? 'text-white scale-110 font-bold' : 'text-orange-200 hover:text-white'}`}>
+                                <IconGrid />
+                                <span className="text-[10px] font-bold mt-1">Alat</span>
+                            </button>
+                        </div>
+                    </nav>
+
+                    <SmartEdgeMenu onNavigate={handleMenuChange} />
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
