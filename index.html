@@ -24,12 +24,8 @@
                 extend: {
                     colors: {
                         zamania: {
-                            50: '#fffcf9',   // Warm cream background
-                            100: '#ffedd5',  // Very light orange
-                            500: '#f97316',  // Fresh Orange
-                            600: '#ea580c',  // Deep Orange
-                            800: '#7c2d12',  // Terracotta/Rust
-                            900: '#431407',  // Deepest Warm Charcoal
+                            50: '#fffcf9', 100: '#ffedd5', 500: '#f97316',
+                            600: '#ea580c', 800: '#7c2d12', 900: '#431407',
                         }
                     }
                 }
@@ -54,7 +50,6 @@
         .ql-toolbar.ql-snow { border: none !important; background-color: #fffcf9; font-family: inherit; }
         .ql-editor { min-height: 150px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 1rem; }
         
-        /* Typography for Rendered HTML in Detail View */
         .rich-content p { margin-bottom: 0.75em; line-height: 1.6; }
         .rich-content strong { font-weight: 700; color: #431407; }
         .rich-content em { font-style: italic; }
@@ -69,7 +64,10 @@
     <script type="text/babel">
         const { useState, useEffect, useMemo, useRef } = React;
         
-        // --- CUSTOM QUILL WRAPPER (ANTI-CRASH) ---
+        // URL GOOGLE APPS SCRIPT ANDA
+        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1icTDTXxIr9hdolaXZl6CCLqcsmvkAIqy11D50-6qhqsOS5Us0RHQ81Q7eTFaduX_WQ/exec";
+
+        // --- CUSTOM QUILL WRAPPER ---
         const RichTextEditor = ({ value, onChange, placeholder }) => {
             const editorRef = useRef(null);
             const quillRef = useRef(null);
@@ -80,21 +78,12 @@
                     quillRef.current = new window.Quill(editorRef.current, {
                         theme: 'snow',
                         placeholder: placeholder || 'Ketik di sini...',
-                        modules: {
-                            toolbar: [
-                                ['bold', 'italic', 'underline', 'strike'],
-                                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                                ['link'],
-                                ['clean']
-                            ]
-                        }
+                        modules: { toolbar: [ ['bold', 'italic', 'underline', 'strike'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link'], ['clean'] ] }
                     });
-
                     quillRef.current.on('text-change', () => {
                         const html = quillRef.current.root.innerHTML;
                         onChange(html === '<p><br></p>' ? '' : html);
                     });
-                    
                     setIsReady(true);
                 }
             }, []);
@@ -103,36 +92,20 @@
                 if (isReady && quillRef.current && value !== undefined) {
                     const currentHtml = quillRef.current.root.innerHTML;
                     if (value !== currentHtml && value !== '<p><br></p>') {
-                        try {
-                            const delta = quillRef.current.clipboard.convert(value || '');
-                            quillRef.current.setContents(delta, 'silent');
-                        } catch(e) {
-                            console.log("Info: Quill clipboard update diskip.");
-                        }
+                        try { quillRef.current.setContents(quillRef.current.clipboard.convert(value || ''), 'silent'); } 
+                        catch(e) {}
                     }
                 }
             }, [value, isReady]);
 
             if (typeof window !== 'undefined' && !window.Quill) {
-                return (
-                    <textarea 
-                        value={value || ''} 
-                        onChange={e => onChange(e.target.value)} 
-                        placeholder={placeholder || "Ketik manual..."} 
-                        className="w-full p-3 border border-orange-200 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" 
-                        rows="6" 
-                    />
-                );
+                return <textarea value={value || ''} onChange={e => onChange(e.target.value)} placeholder={placeholder || "Ketik manual..."} className="w-full p-3 border border-orange-200 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" rows="6" />;
             }
 
-            return (
-                <div className="bg-white border border-orange-200 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-orange-500 transition-all">
-                    <div ref={editorRef}></div>
-                </div>
-            );
+            return <div className="bg-white border border-orange-200 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-orange-500 transition-all"><div ref={editorRef}></div></div>;
         };
 
-        // --- ICONS (Inline SVG) ---
+        // --- ICONS ---
         const IconClock = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
         const IconBook = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>;
         const IconUsers = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
@@ -146,54 +119,41 @@
         const IconGrid = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>;
         const IconDatabase = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>;
         const IconEdit = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>;
-        const IconAlert = () => <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>;
+        const IconSparkles = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>;
 
-        // URL GOOGLE APPS SCRIPT ANDA (API CLOUD)
-        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1icTDTXxIr9hdolaXZl6CCLqcsmvkAIqy11D50-6qhqsOS5Us0RHQ81Q7eTFaduX_WQ/exec";
-
-        const stripHtml = (html) => {
-            if (!html) return '';
-            let doc = new DOMParser().parseFromString(html, 'text/html');
-            return doc.body.textContent || "";
-        };
-
-        // --- INITIAL DATABASE (MOCK DATA - USED AS FALLBACK IF FETCH FAILS) ---
-        const initialEvents = [
-            { id: 1, yearMath: -3000, displayM: "Abad 30 SM", displayH: "~ 3733 SH", title: "Peristiwa Banjir Nuh", category: "Islam, Agama", description: "<p>Perkiraan waktu terjadinya air bah besar di masa Nabi Nuh AS yang membasuh peradaban lama di bumi.</p>" },
-            { id: 2, yearMath: 622, displayM: "622 M", displayH: "1 H", title: "Hijrah Nabi Muhammad SAW", category: "Islam, Agama", description: "<p>Perpindahan Rasulullah SAW dan para sahabat dari Mekkah ke Madinah.</p>" },
-            { id: 5, yearMath: 1453, displayM: "29 Mei 1453 M", displayH: "20 Jumadil Ula 857 H", title: "Penaklukan Konstantinopel", category: "Islam, Perang", description: "<p>Jatuhnya benteng Konstantinopel ke tangan Kesultanan Utsmaniyah di bawah pimpinan <strong>Sultan Muhammad Al-Fatih</strong>.</p>" },
-        ];
-
-        const initialFigures = [
-            { id: 11, birthMath: 767, deathMath: 820, displayBirthM: "767 M", displayBirthH: "150 H", displayDeathM: "820 M", displayDeathH: "204 H", name: "Imam Syafi'i", category: "Islam, Agama", description: "<p>Ulama besar peletak dasar ilmu ushul fiqh dan pendiri <strong>Mazhab Syafi'i</strong>.</p>" },
-            { id: 13, birthMath: 1350, deathMath: 1389, displayBirthM: "1350 M", displayBirthH: "751 H", displayDeathM: "1389 M", displayDeathH: "791 H", name: "Hayam Wuruk", category: "Nusantara, Politik", description: "<p>Raja keempat Kerajaan Majapahit bergelar Sri Rajasanagara.</p>" },
-        ];
-
-        const initialEras = [
-            { id: 22, startMath: 661, endMath: 750, name: "Kekhalifahan Umayyah", wilayah: "Islam", color: "bg-green-100 border-green-300 text-green-800", description: "<p>Kekhalifahan Islam pertama setelah Khulafaur Rasyidin.</p>" },
-            { id: 23, startMath: 1293, endMath: 1527, name: "Kerajaan Majapahit", wilayah: "Nusantara", color: "bg-amber-100 border-amber-300 text-amber-800", description: "<p>Kemaharajaan Hindu-Buddha terbesar di Nusantara.</p>" },
-        ];
+        const stripHtml = (html) => { if (!html) return ''; let doc = new DOMParser().parseFromString(html, 'text/html'); return doc.body.textContent || ""; };
 
         const calculateConversions = (mathYear) => {
             if (!mathYear && mathYear !== 0) return { m: "", h: "" };
             const y = parseInt(mathYear);
             let mStr = y > 0 ? `${y} M` : `${Math.abs(y)} SM`;
             if (y === 0) mStr = "1 SM"; 
-
             const hYearExact = (y - 621.5774) * 1.030684; 
-            let hStr = "";
-            if (hYearExact >= 0) {
-                hStr = `${Math.floor(hYearExact) + 1} H`;
-            } else {
-                hStr = `${Math.floor(Math.abs(hYearExact))} SH`; 
-            }
-            return { m: mStr, h: hStr };
+            return { m: mStr, h: hYearExact >= 0 ? `${Math.floor(hYearExact) + 1} H` : `${Math.floor(Math.abs(hYearExact))} SH` };
+        };
+
+        // --- FETCH AI HELPER ---
+        const generateDataWithAI = async (prompt, onResult, onError) => {
+            try {
+                const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'generate_ai', data: { prompt } })
+                });
+                
+                const result = await response.json();
+                if (result.status === 'success') {
+                    let text = result.data;
+                    if (text.includes('```json')) text = text.split('```json')[1].split('```')[0].trim();
+                    else if (text.includes('```')) text = text.split('```')[1].split('```')[0].trim();
+                    onResult(JSON.parse(text));
+                } else throw new Error(result.message);
+            } catch (err) { onError(err.message); }
         };
 
         // --- COMPONENTS ---
         const SmartEdgeMenu = ({ onAddNew }) => {
             const [isOpen, setIsOpen] = useState(false);
-
             useEffect(() => {
                 const closeMenu = () => { if (isOpen) setIsOpen(false); };
                 if (isOpen) window.addEventListener('click', closeMenu);
@@ -201,11 +161,11 @@
             }, [isOpen]);
 
             return (
-                <div className="no-select hidden md:block"> 
+                <div className="no-select"> 
                     {isOpen && <div className="fixed inset-0 z-[9997] bg-black/5 backdrop-blur-[1px] transition-all"></div>}
                     <div className={`fixed top-1/2 right-0 transform -translate-y-1/2 z-[9998] transition-transform duration-300 cubic-bezier(0.4, 0, 0.2, 1) flex items-center ${isOpen ? 'translate-x-0' : 'translate-x-full'}`} onClick={(e) => e.stopPropagation()}>
-                        <div onClick={() => setIsOpen(!isOpen)} className={`absolute -left-8 bg-orange-950/20 backdrop-blur-sm text-orange-700 rounded-l-xl cursor-pointer flex items-center justify-center hover:bg-orange-600 hover:text-white transition-all duration-300 hover:shadow-[-2px_0_10px_rgba(234,88,12,0.2)] ${isOpen ? 'bg-orange-600 text-white' : ''}`} style={{ width: '32px', height: '48px' }}>
-                            <div className={`transform transition-transform duration-300 scale-75 ${isOpen ? 'rotate-180' : ''}`}><IconChevronLeft /></div>
+                        <div onClick={() => setIsOpen(!isOpen)} className={`absolute -left-10 bg-orange-950/20 backdrop-blur-sm text-orange-700 rounded-l-xl cursor-pointer flex items-center justify-center hover:bg-orange-600 hover:text-white transition-all duration-300 hover:shadow-[-2px_0_10px_rgba(234,88,12,0.2)] ${isOpen ? 'bg-orange-600 text-white' : ''}`} style={{ width: '40px', height: '56px' }}>
+                            <div className={`transform transition-transform duration-300 scale-100 ${isOpen ? 'rotate-180' : ''}`}><IconChevronLeft /></div>
                         </div>
                         <div className="w-56 bg-white/95 backdrop-blur-md shadow-[-5px_0_25px_rgba(234,88,12,0.15)] border-l border-y border-orange-100 rounded-l-2xl p-4 flex flex-col gap-2">
                             <div className="text-[10px] font-bold text-orange-400 px-2 py-1 uppercase tracking-wider border-b border-orange-100 mb-2">Tambah Data Baru</div>
@@ -381,7 +341,7 @@
                                 <div className="text-orange-500"><IconGlobe /></div>
                                 <div>
                                     <h2 className="text-lg font-black text-gray-800 leading-none">Mesin Waktu</h2>
-                                    <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Komparasi Geografis Paralel</p>
+                                    <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Komparasi Paralel</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-3 w-full md:max-w-lg">
@@ -718,10 +678,24 @@
                 }
                 return { yearMath: '', displayM: '', displayH: '', title: '', wilayah: '', tema: '', description: '' };
             });
+            const [isGenerating, setIsGenerating] = useState(false);
 
             const handleMathYearChange = (e) => { const v=e.target.value; const c=calculateConversions(v); setFormData({...formData, yearMath:v, displayM:c.m, displayH:c.h}); };
             const handleDescChange = (content) => { setFormData({...formData, description: content}); };
             
+            const handleAIGenerate = () => {
+                if(!formData.title) return alert("Ketik Judul Peristiwa terlebih dahulu!");
+                setIsGenerating(true);
+                const prompt = `Berikan data sejarah untuk peristiwa: "${formData.title}". 
+Kembalikan HANYA format JSON valid tanpa markdown \`\`\` dengan struktur persis ini: 
+{"yearMath": angka_tahun_masehi, "displayM": "contoh: 1453 M", "displayH": "contoh: 857 H", "wilayah": "Pilih SATU: Nusantara/Islam/Eropa/Asia Timur/Asia Selatan/Amerika/Afrika", "tema": "Pilih SATU: Agama/Perang/Politik/Teknologi/Seni Budaya/Umum", "description": "Gunakan tag HTML <p> dan <strong> untuk menjelaskan sejarahnya."}`;
+                
+                generateDataWithAI(prompt, (res) => {
+                    setFormData({...formData, ...res});
+                    setIsGenerating(false);
+                }, (err) => { alert("Gagal AI: " + err); setIsGenerating(false); });
+            };
+
             const handleSubmit = (e) => {
                 e.preventDefault();
                 const finalCategory = `${formData.wilayah}, ${formData.tema}`;
@@ -732,12 +706,18 @@
                 <div className="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-orange-100 pb-20">
                     <div className="flex justify-between items-center mb-6 border-b pb-4"><h2 className="text-xl font-bold text-gray-800">{initialData ? 'Edit Peristiwa' : 'Tambah Peristiwa'}</h2><button onClick={onCancel} className="text-gray-400 font-bold hover:text-red-500">Batal</button></div>
                     <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="flex gap-2">
+                            <input type="text" required value={formData.title} onChange={e=>setFormData({...formData,title:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Judul Peristiwa (Misal: Perang Badar)" />
+                            <button type="button" onClick={handleAIGenerate} disabled={isGenerating} className="whitespace-nowrap flex items-center gap-2 px-4 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-bold rounded-lg transition-all disabled:opacity-50">
+                                <IconSparkles /> {isGenerating ? 'Berpikir...' : 'Auto-Fill AI'}
+                            </button>
+                        </div>
+                        
                         <input type="number" required value={formData.yearMath} onChange={handleMathYearChange} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Tahun Matematis (Misal: 1453)" />
                         <div className="grid grid-cols-2 gap-2">
                             <input type="text" value={formData.displayM} onChange={e=>setFormData({...formData,displayM:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none" placeholder="Tampil Masehi" />
                             <input type="text" value={formData.displayH} onChange={e=>setFormData({...formData,displayH:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none" placeholder="Tampil Hijriah" />
                         </div>
-                        <input type="text" required value={formData.title} onChange={e=>setFormData({...formData,title:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Judul Peristiwa" />
                         
                         <div className="grid grid-cols-2 gap-2">
                             <select required value={formData.wilayah} onChange={e=>setFormData({...formData, wilayah:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
@@ -769,11 +749,25 @@
                 }
                 return { birthMath: '', displayBirthM: '', displayBirthH: '', deathMath: '', displayDeathM: '', displayDeathH: '', name: '', wilayah: '', tema: '', description: '' };
             });
+            const [isGenerating, setIsGenerating] = useState(false);
 
             const handleBirthMathChange = (e) => { const v=e.target.value; const c=calculateConversions(v); setFormData({...formData, birthMath:v, displayBirthM:c.m, displayBirthH:c.h}); };
             const handleDeathMathChange = (e) => { const v=e.target.value; const c=calculateConversions(v); setFormData({...formData, deathMath:v, displayDeathM:c.m, displayDeathH:c.h}); };
             const handleDescChange = (content) => { setFormData({...formData, description: content}); };
             
+            const handleAIGenerate = () => {
+                if(!formData.name) return alert("Ketik Nama Tokoh terlebih dahulu!");
+                setIsGenerating(true);
+                const prompt = `Berikan data sejarah untuk tokoh: "${formData.name}". 
+Kembalikan HANYA format JSON valid tanpa markdown \`\`\` dengan struktur persis ini: 
+{"birthMath": angka_tahun_lahir_masehi, "displayBirthM": "contoh: 1847 M", "displayBirthH": "contoh: 1263 H", "deathMath": angka_tahun_wafat_masehi_jika_ada, "displayDeathM": "Tahun Wafat Masehi", "displayDeathH": "Tahun Wafat Hijriah", "wilayah": "Pilih SATU: Nusantara/Islam/Eropa/Asia Timur/Asia Selatan/Amerika/Afrika", "tema": "Pilih SATU: Agama/Politik/Teknologi/Perang/Seni Budaya/Umum", "description": "Gunakan tag HTML <p> dan <strong> untuk biografi singkatnya."}`;
+                
+                generateDataWithAI(prompt, (res) => {
+                    setFormData({...formData, ...res});
+                    setIsGenerating(false);
+                }, (err) => { alert("Gagal AI: " + err); setIsGenerating(false); });
+            };
+
             const handleSubmit = (e) => {
                 e.preventDefault();
                 const finalCategory = `${formData.wilayah}, ${formData.tema}`;
@@ -784,7 +778,13 @@
                 <div className="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-orange-100 pb-20">
                     <div className="flex justify-between items-center mb-6 border-b pb-4"><h2 className="text-xl font-bold text-gray-800">{initialData ? 'Edit Tokoh' : 'Tambah Tokoh'}</h2><button onClick={onCancel} className="text-gray-400 font-bold hover:text-red-500">Batal</button></div>
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        <input type="text" required value={formData.name} onChange={e=>setFormData({...formData,name:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Nama Tokoh" />
+                        <div className="flex gap-2">
+                            <input type="text" required value={formData.name} onChange={e=>setFormData({...formData,name:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Nama Tokoh (Misal: Imam Syafi'i)" />
+                            <button type="button" onClick={handleAIGenerate} disabled={isGenerating} className="whitespace-nowrap flex items-center gap-2 px-4 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-bold rounded-lg transition-all disabled:opacity-50">
+                                <IconSparkles /> {isGenerating ? 'Berpikir...' : 'Auto-Fill AI'}
+                            </button>
+                        </div>
+
                         <div className="bg-orange-50 p-4 rounded-lg border border-orange-100">
                             <p className="text-xs font-bold text-orange-800 mb-2 uppercase tracking-wide">Data Lahir</p>
                             <input type="number" required value={formData.birthMath} onChange={handleBirthMathChange} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 mb-2" placeholder="Tahun Lahir (Math)" />
@@ -793,6 +793,7 @@
                                 <input type="text" value={formData.displayBirthH} onChange={e=>setFormData({...formData,displayBirthH:e.target.value})} className="p-2.5 border border-orange-100 rounded-lg outline-none" placeholder="Tampil Lahir Hijriah" />
                             </div>
                         </div>
+
                         <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                             <p className="text-xs font-bold text-gray-600 mb-2 uppercase tracking-wide">Data Wafat (Kosongkan jika masih hidup)</p>
                             <input type="number" value={formData.deathMath} onChange={handleDeathMathChange} className="w-full p-2.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 mb-2" placeholder="Tahun Wafat (Math)" />
@@ -801,6 +802,7 @@
                                 <input type="text" value={formData.displayDeathH} onChange={e=>setFormData({...formData,displayDeathH:e.target.value})} className="p-2.5 border border-gray-200 rounded-lg outline-none" placeholder="Tampil Wafat Hijriah" />
                             </div>
                         </div>
+
                         <div className="grid grid-cols-2 gap-2 mt-4">
                             <select required value={formData.wilayah} onChange={e=>setFormData({...formData, wilayah:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
                                 <option value="" disabled>Asal Wilayah...</option><option value="Nusantara">Nusantara</option><option value="Islam">Timur Tengah / Islam</option><option value="Eropa">Eropa & Barat</option><option value="Asia Timur">Asia Timur</option><option value="Asia Selatan">Asia Selatan</option><option value="Amerika">Amerika</option><option value="Afrika">Afrika</option>
@@ -869,38 +871,21 @@
                 const fetchDatabase = async () => {
                     try {
                         setSyncStatus('Menghubungkan ke Cloud...');
-                        const fetchUrl = `${GOOGLE_APPS_SCRIPT_URL}?t=${new Date().getTime()}`;
-                        const response = await fetch(fetchUrl);
+                        const response = await fetch(GOOGLE_APPS_SCRIPT_URL);
                         
-                        if (!response.ok) {
-                            throw new Error(`HTTP Error Status: ${response.status}`);
-                        }
-
+                        if (!response.ok) throw new Error(`HTTP Error Status: ${response.status}`);
                         const result = await response.json();
                         
                         if (isMounted) {
                             if (result.status === 'success') {
-                                setEvents(result.data.events || []);
-                                setFigures(result.data.figures || []);
-                                setEras(result.data.eras || []);
+                                setEvents(result.data.events || []); setFigures(result.data.figures || []); setEras(result.data.eras || []);
                                 setIsError(false);
-                            } else {
-                                throw new Error(result.message || "Gagal mengurai data dari Cloud");
-                            }
+                            } else throw new Error(result.message || "Gagal mengurai data dari Cloud");
                         }
                     } catch (error) {
-                        if (isMounted) {
-                            console.error("Cloud Fetch Failed:", error.message);
-                            setIsError(true);
-                            setEvents(initialEvents);
-                            setFigures(initialFigures);
-                            setEras(initialEras);
-                        }
+                        if (isMounted) { console.error("Cloud Fetch Failed:", error.message); setIsError(true); }
                     } finally {
-                        if (isMounted) {
-                            setIsLoadingData(false);
-                            setSyncStatus('');
-                        }
+                        if (isMounted) { setIsLoadingData(false); setSyncStatus(''); }
                     }
                 };
 
@@ -929,16 +914,8 @@
                 try {
                     const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'text/plain;charset=utf-8'
-                        },
-                        body: JSON.stringify({
-                            password: adminPassword,
-                            action: actionStr,
-                            data: data
-                        })
+                        body: JSON.stringify({ password: adminPassword, action: actionStr, data: data })
                     });
-
                     const result = await response.json();
 
                     if (result.status === 'success') {
@@ -957,13 +934,10 @@
                         
                         setSyncStatus('Berhasil Disimpan!');
                         setTimeout(() => { setSyncStatus(''); setActiveMenu('timeline'); setEditingItem(null); setSelectedItem(null); }, 1500);
-                    } else {
-                        alert("Gagal Menyimpan: " + result.message);
-                        setSyncStatus('');
-                    }
+                    } else { alert("Gagal Menyimpan: " + result.message); setSyncStatus(''); }
                 } catch (error) {
                     console.error("Save Error:", error.message);
-                    alert("Akses POST diblokir oleh sistem. Pastikan pengaturan Google Apps Script Anda (Who Has Access) diatur ke 'Anyone' (Siapa Saja).");
+                    alert("Akses POST diblokir. Pastikan Google Apps Script (Who Has Access) diatur ke 'Anyone'.");
                     setSyncStatus('');
                 }
             };
@@ -971,14 +945,11 @@
             const handleMenuChange = (menu) => { setSelectedItem(null); setEditingItem(null); setActiveMenu(menu); };
             const handleAddNew = (type) => { setSelectedItem(null); setEditingItem(null); setActiveMenu(`form_${type}`); };
             const handleEditItem = (item) => {
-                setSelectedItem(null);
-                setEditingItem(item);
+                setSelectedItem(null); setEditingItem(item);
                 if (item.type === 'event') setActiveMenu('form_event');
                 if (item.type === 'birth' || item.type === 'death') setActiveMenu('form_figure');
                 if (item.type === 'era') setActiveMenu('form_era');
             };
-
-            const isAlatActive = ['alat_home', 'events', 'figures', 'eras', 'tech', 'converter'].includes(activeMenu);
 
             if (isLoadingData) {
                 return (
@@ -997,12 +968,7 @@
                         <h2 className="text-2xl font-black text-red-900 mb-4">Koneksi Database Terputus</h2>
                         <p className="text-red-700 max-w-md mx-auto mb-6">Aplikasi gagal mengambil data dari API Google Apps Script. <strong>Pesan Error: Failed to fetch.</strong></p>
                         <div className="bg-white p-6 rounded-xl border border-red-200 text-left max-w-lg shadow-sm">
-                            <h3 className="font-bold text-red-800 mb-2">Penyebab & Solusi:</h3>
-                            <ol className="list-decimal pl-5 text-sm text-gray-700 space-y-2">
-                                <li><strong>Hak Akses Belum Publik:</strong> Buka Google Apps Script &gt; Terapkan (Deploy) &gt; Kelola deployment. Pastikan opsi <em>Who has access</em> disetel ke <strong>Anyone (Siapa saja)</strong>.</li>
-                                <li><strong>Jangan lupa</strong> gunakan metode <strong>New Version</strong> setiap kali menyimpan deployment.</li>
-                            </ol>
-                            <button onClick={() => window.location.reload()} className="mt-6 w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition-colors">Coba Hubungkan Kembali</button>
+                            <button onClick={() => window.location.reload()} className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition-colors">Coba Hubungkan Kembali</button>
                         </div>
                     </div>
                 );
@@ -1015,18 +981,7 @@
                             <h1 className="text-xl font-extrabold tracking-tight">ZAMANIA</h1>
                             <p className="text-[10px] text-orange-100 font-semibold tracking-wider uppercase leading-none mt-1">Kalender Sejarah</p>
                         </div>
-                        
-                        {syncStatus && (
-                            <div className="absolute top-14 left-1/2 transform -translate-x-1/2 bg-white text-orange-600 px-4 py-1.5 rounded-full text-xs font-bold shadow-lg animate-pulse z-50 border border-orange-200">
-                                {syncStatus}
-                            </div>
-                        )}
-
-                        <div className="md:hidden flex gap-2">
-                             <button onClick={() => handleAddNew('event')} className="text-white bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors" title="Tambah Peristiwa"><IconBook /></button>
-                             <button onClick={() => handleAddNew('figure')} className="text-white bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors" title="Tambah Tokoh"><IconUsers /></button>
-                             <button onClick={() => handleAddNew('era')} className="text-white bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors" title="Tambah Era"><IconDatabase /></button>
-                        </div>
+                        {syncStatus && <div className="absolute top-14 left-1/2 transform -translate-x-1/2 bg-white text-orange-600 px-4 py-1.5 rounded-full text-xs font-bold shadow-lg animate-pulse z-50 border border-orange-200">{syncStatus}</div>}
                     </header>
 
                     <div className="flex-1 p-4 md:p-6 scrollable-content relative">
@@ -1052,18 +1007,9 @@
 
                     <nav className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-orange-600 to-orange-700 bottom-nav-shadow z-40 pb-safe">
                         <div className="max-w-md mx-auto flex justify-between items-center h-16 px-6">
-                            <button onClick={() => handleMenuChange('timeline')} className={`flex flex-col items-center justify-center w-full h-full transition-all ${activeMenu === 'timeline' ? 'text-white scale-110 font-bold' : 'text-orange-200 hover:text-white'}`}>
-                                <IconClock />
-                                <span className="text-[10px] font-bold mt-1">Garis Waktu</span>
-                            </button>
-                            <button onClick={() => handleMenuChange('time_machine')} className={`flex flex-col items-center justify-center w-full h-full transition-all ${activeMenu === 'time_machine' ? 'text-white scale-110 font-bold' : 'text-orange-200 hover:text-white'}`}>
-                                <IconGlobe />
-                                <span className="text-[10px] font-bold mt-1">Mesin Waktu</span>
-                            </button>
-                            <button onClick={() => handleMenuChange('alat_home')} className={`flex flex-col items-center justify-center w-full h-full transition-all ${isAlatActive ? 'text-white scale-110 font-bold' : 'text-orange-200 hover:text-white'}`}>
-                                <IconGrid />
-                                <span className="text-[10px] font-bold mt-1">Alat</span>
-                            </button>
+                            <button onClick={() => handleMenuChange('timeline')} className={`flex flex-col items-center justify-center w-full h-full transition-all ${activeMenu === 'timeline' ? 'text-white scale-110 font-bold' : 'text-orange-200 hover:text-white'}`}><IconClock /><span className="text-[10px] font-bold mt-1">Garis Waktu</span></button>
+                            <button onClick={() => handleMenuChange('time_machine')} className={`flex flex-col items-center justify-center w-full h-full transition-all ${activeMenu === 'time_machine' ? 'text-white scale-110 font-bold' : 'text-orange-200 hover:text-white'}`}><IconGlobe /><span className="text-[10px] font-bold mt-1">Mesin Waktu</span></button>
+                            <button onClick={() => handleMenuChange('alat_home')} className={`flex flex-col items-center justify-center w-full h-full transition-all ${['alat_home', 'events', 'figures', 'eras', 'tech', 'converter'].includes(activeMenu) ? 'text-white scale-110 font-bold' : 'text-orange-200 hover:text-white'}`}><IconGrid /><span className="text-[10px] font-bold mt-1">Alat</span></button>
                         </div>
                     </nav>
 
