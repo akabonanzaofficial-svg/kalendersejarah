@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZAMANIA Kalender Sejarah</title>
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
     
     <!-- React & ReactDOM -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="[https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js](https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js)" crossorigin></script>
+    <script src="[https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js](https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js)" crossorigin></script>
     
     <!-- Quill.js (Rich Text Editor Native) -->
-    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
-    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    <link href="[https://cdn.quilljs.com/1.3.7/quill.snow.css](https://cdn.quilljs.com/1.3.7/quill.snow.css)" rel="stylesheet">
+    <script src="[https://cdn.quilljs.com/1.3.7/quill.min.js](https://cdn.quilljs.com/1.3.7/quill.min.js)"></script>
 
     <!-- Babel Compiler for JSX -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js" crossorigin></script>
+    <script src="[https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js](https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js)" crossorigin></script>
 
     <script>
         tailwind.config = {
@@ -65,7 +65,7 @@
         const { useState, useEffect, useMemo, useRef } = React;
         
         // URL GOOGLE APPS SCRIPT ANDA
-        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1icTDTXxIr9hdolaXZl6CCLqcsmvkAIqy11D50-6qhqsOS5Us0RHQ81Q7eTFaduX_WQ/exec";
+        const GOOGLE_APPS_SCRIPT_URL = "[https://script.google.com/macros/s/AKfycbx1icTDTXxIr9hdolaXZl6CCLqcsmvkAIqy11D50-6qhqsOS5Us0RHQ81Q7eTFaduX_WQ/exec](https://script.google.com/macros/s/AKfycbx1icTDTXxIr9hdolaXZl6CCLqcsmvkAIqy11D50-6qhqsOS5Us0RHQ81Q7eTFaduX_WQ/exec)";
 
         // --- CUSTOM QUILL WRAPPER ---
         const RichTextEditor = ({ value, onChange, placeholder }) => {
@@ -106,20 +106,20 @@
         };
 
         // --- ICONS ---
-        const IconClock = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
-        const IconBook = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>;
-        const IconUsers = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
-        const IconCpu = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>;
-        const IconGlobe = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>;
-        const IconSearch = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
-        const IconArrowLeft = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>;
-        const IconChevronLeft = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>;
-        const IconMapPin = () => <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>;
-        const IconCalendar = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>;
-        const IconGrid = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>;
-        const IconDatabase = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>;
-        const IconEdit = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>;
-        const IconSparkles = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>;
+        const IconClock = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
+        const IconBook = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>;
+        const IconUsers = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+        const IconCpu = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>;
+        const IconGlobe = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>;
+        const IconSearch = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
+        const IconArrowLeft = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>;
+        const IconChevronLeft = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>;
+        const IconMapPin = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>;
+        const IconCalendar = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>;
+        const IconGrid = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>;
+        const IconDatabase = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>;
+        const IconEdit = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>;
+        const IconSparkles = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>;
 
         const stripHtml = (html) => { if (!html) return ''; let doc = new DOMParser().parseFromString(html, 'text/html'); return doc.body.textContent || ""; };
 
@@ -149,6 +149,54 @@
                     onResult(JSON.parse(text));
                 } else throw new Error(result.message);
             } catch (err) { onError(err.message); }
+        };
+
+        // --- CUSTOM QUILL WRAPPER ---
+        const RichTextEditor = ({ value, onChange, placeholder }) => {
+            const editorRef = useRef(null);
+            const quillRef = useRef(null);
+            const isInternalChange = useRef(false);
+
+            useEffect(() => {
+                if (typeof window !== 'undefined' && window.Quill && editorRef.current && !quillRef.current) {
+                    quillRef.current = new window.Quill(editorRef.current, {
+                        theme: 'snow',
+                        placeholder: placeholder || 'Ketik di sini...',
+                        modules: { toolbar: [ ['bold', 'italic', 'underline', 'strike'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link'], ['clean'] ] }
+                    });
+                    
+                    if (value) {
+                        quillRef.current.clipboard.dangerouslyPasteHTML(value);
+                    }
+
+                    quillRef.current.on('text-change', (delta, oldDelta, source) => {
+                        if (source === 'user') {
+                            isInternalChange.current = true;
+                            const html = quillRef.current.root.innerHTML;
+                            onChange(html === '<p><br></p>' ? '' : html);
+                        }
+                    });
+                }
+            }, []);
+
+            useEffect(() => {
+                if (quillRef.current && value !== undefined) {
+                    if (isInternalChange.current) {
+                        isInternalChange.current = false;
+                    } else {
+                        const currentHtml = quillRef.current.root.innerHTML;
+                        if (value !== currentHtml && value !== '<p><br></p>') {
+                            quillRef.current.clipboard.dangerouslyPasteHTML(value || '');
+                        }
+                    }
+                }
+            }, [value]);
+
+            if (typeof window !== 'undefined' && !window.Quill) {
+                return <textarea value={value || ''} onChange={e => onChange(e.target.value)} placeholder={placeholder || "Ketik manual..."} className="w-full p-3 border border-orange-200 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" rows="6" />;
+            }
+
+            return <div className="bg-white border border-orange-200 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-orange-500 transition-all"><div ref={editorRef}></div></div>;
         };
 
         // --- COMPONENTS ---
@@ -530,7 +578,7 @@
         };
 
         const ErasList = ({ items, onCardClick, onBack }) => {
-            const [activeFilter, setActiveFilter] = useState('Semua'); 
+            const [activeFilter, useState] = React.useState('Semua'); 
             const displayItems = items.filter(item => {
                 if (activeFilter === 'Semua') return true;
                 const cat = item.wilayah ? item.wilayah.toLowerCase() : '';
@@ -703,7 +751,7 @@ Kembalikan HANYA format JSON valid tanpa markdown \`\`\` dengan struktur persis 
             };
 
             return (
-                <div className="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-orange-100 pb-20">
+                <div className="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-orange-100 pb-8 mb-28">
                     <div className="flex justify-between items-center mb-6 border-b pb-4"><h2 className="text-xl font-bold text-gray-800">{initialData ? 'Edit Peristiwa' : 'Tambah Peristiwa'}</h2><button onClick={onCancel} className="text-gray-400 font-bold hover:text-red-500">Batal</button></div>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="flex gap-2">
@@ -775,7 +823,7 @@ Kembalikan HANYA format JSON valid tanpa markdown \`\`\` dengan struktur persis 
             };
 
             return (
-                <div className="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-orange-100 pb-20">
+                <div className="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-orange-100 pb-8 mb-28">
                     <div className="flex justify-between items-center mb-6 border-b pb-4"><h2 className="text-xl font-bold text-gray-800">{initialData ? 'Edit Tokoh' : 'Tambah Tokoh'}</h2><button onClick={onCancel} className="text-gray-400 font-bold hover:text-red-500">Batal</button></div>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="flex gap-2">
@@ -823,8 +871,22 @@ Kembalikan HANYA format JSON valid tanpa markdown \`\`\` dengan struktur persis 
         
         const FormEra = ({ onSave, onCancel, initialData }) => {
             const [formData, setFormData] = useState(initialData || { startMath: '', endMath: '', name: '', wilayah: '', description: '', color: 'bg-orange-100 border-orange-300 text-orange-800' });
+            const [isGenerating, setIsGenerating] = useState(false);
             
             const handleDescChange = (content) => { setFormData({...formData, description: content}); };
+
+            const handleAIGenerate = () => {
+                if(!formData.name) return alert("Ketik Nama Era/Zaman terlebih dahulu!");
+                setIsGenerating(true);
+                const prompt = `Berikan data sejarah untuk era/zaman: "${formData.name}". 
+Kembalikan HANYA format JSON valid tanpa markdown \`\`\` dengan struktur persis ini: 
+{"startMath": angka_tahun_berdiri_masehi, "endMath": angka_tahun_runtuh_masehi, "wilayah": "Pilih SATU: Nusantara/Islam/Eropa/Asia Timur/Asia Selatan/Amerika/Afrika", "description": "Gunakan tag HTML <p> dan <strong> untuk merangkum sejarah era ini."}`;
+                
+                generateDataWithAI(prompt, (res) => {
+                    setFormData({...formData, ...res});
+                    setIsGenerating(false);
+                }, (err) => { alert("Gagal AI: " + err); setIsGenerating(false); });
+            };
 
             const handleSubmit = (e) => {
                 e.preventDefault();
@@ -832,10 +894,15 @@ Kembalikan HANYA format JSON valid tanpa markdown \`\`\` dengan struktur persis 
             };
 
             return (
-                <div className="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-orange-100 pb-20">
+                <div className="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-orange-100 pb-8 mb-28">
                     <div className="flex justify-between items-center mb-6 border-b pb-4"><h2 className="text-xl font-bold text-gray-800">{initialData ? 'Edit Era' : 'Tambah Era / Zaman'}</h2><button onClick={onCancel} className="text-gray-400 font-bold hover:text-red-500">Batal</button></div>
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        <input type="text" required value={formData.name} onChange={e=>setFormData({...formData,name:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Nama Era (Misal: Bani Umayyah)" />
+                        <div className="flex gap-2">
+                            <input type="text" required value={formData.name} onChange={e=>setFormData({...formData,name:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500" placeholder="Nama Era (Misal: Bani Umayyah)" />
+                            <button type="button" onClick={handleAIGenerate} disabled={isGenerating} className="whitespace-nowrap flex items-center gap-2 px-4 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-bold rounded-lg transition-all disabled:opacity-50">
+                                <IconSparkles /> {isGenerating ? 'Berpikir...' : 'Auto-Fill AI'}
+                            </button>
+                        </div>
                         <select required value={formData.wilayah} onChange={e=>setFormData({...formData, wilayah:e.target.value})} className="w-full p-2.5 border border-orange-100 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 bg-white">
                             <option value="" disabled>Pusat Wilayah Kekuasaan...</option><option value="Nusantara">Nusantara</option><option value="Islam">Timur Tengah / Islam</option><option value="Eropa">Eropa & Barat</option><option value="Asia Timur">Asia Timur</option><option value="Asia Selatan">Asia Selatan</option><option value="Amerika">Amerika</option><option value="Afrika">Afrika</option>
                         </select>
